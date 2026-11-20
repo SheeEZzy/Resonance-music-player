@@ -1,0 +1,1181 @@
+/*CSS Program for the BSIT - 1A Extended Project: Spotify/music player
+Lavina, Linux. de la Cerna, Joseph. Bono, Chino. Canada, Miguel.
+App name: Resonance*/
+
+
+
+/*To adjust the positioning of heading, player, and sidebars*/
+:root { 
+    --heading-h:45px;
+    --left-sidebar-w: 160px;
+    --right-sidebar-w: 390px;
+    --player-h: 80px;
+}
+
+body{
+    margin: 0;
+    overflow: hidden;               /*makes the main-content scrollable only*/
+    background-color: black;
+    color: white;
+    font-family: 'Avenir Next', 'Avenir', 'Century Gothic', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/*The entire app grid*/
+.app-grid {        
+    display: grid;
+    height:100vh;
+    grid-template-columns: var(--left-sidebar-w) 1fr var(--right-sidebar-w);
+    grid-template-rows: var(--heading-h) minmax(0, 1fr) var(--player-h);
+    grid-template-areas:
+        "heading heading heading"
+        "left    main    right"
+        "player  player  player";
+}
+
+/*------ HEADING AREA ------*/
+.heading {
+    grid-area: heading;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+}
+.heading .logo {
+    position:absolute;
+    top: 50%;
+    left:12px;
+    border-radius: 50px;
+    transform: translateY(-50%);       /*centers the logo vertically */
+    width: 40px;
+    height: 40px;
+}
+
+/*The search bar (In heading)*/
+.search-bar {
+    width: 100%;
+    max-width: 400px;            /* stops it from stretching too wide */
+    height: 32px;                /* fits inside the header */
+    box-sizing: border-box;
+    padding: 0 16px;
+    border: 2px solid transparent;
+    border-radius: 500px;        /* pill shape */
+    background: #282828;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+}
+.search-bar::placeholder {
+    color: #B3B3B3;              /* muted text */
+}
+.search-bar:hover {
+    background: #333;
+}
+.search-bar:focus {
+    border-color: #fff;          /* white outline when typing */
+}
+
+
+/*------ MAIN CONTENT ------*/
+.main-content {
+    grid-area: main;
+    background: linear-gradient(to bottom, rgba(1, 1, 255, 0.356), black);
+    box-sizing: border-box;
+    border-radius: 8px;
+    margin: 4px;
+    padding: 4px;
+    overflow-y: auto;
+}
+
+/* --- MAIN CONTENT: Home ---
+adding default and custom themes*/
+.home {
+    display:block;
+    text-align: center;
+}
+
+.home-logo {
+    display: block;
+    width: 240px;          
+    max-width: 60%;        /* keeps it from overflowing on phones */
+    height: auto;
+    margin: 0 auto 16px;   
+}
+
+.home h1 {
+    font-family: 'Century Gothic';
+    font-size: 40px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.home p {
+    font-family: 'Arial';
+    font-size:large;
+    color:#929292;
+}
+.themes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 400px));
+    justify-content: start;
+    gap: 16px;
+    margin-top: 24px;
+    
+}
+
+.theme {
+    background-color: #181818;
+    padding: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.25s, transform 0.25s;
+}
+
+.theme h4 {
+    margin: 0 0 8px;
+}
+
+.theme img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 12px;
+}
+
+.theme:hover {
+    background-color: #282828;     
+    transform: scale(1.04);
+}
+
+/* background image for the Home page only */
+.main-content.home-bg {
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.75)),   /* dark overlay so the text stays readable */
+        url("Home_Bg_img.png") center / cover no-repeat;
+}
+
+/* --- MAIN CONTENT: Library ---
+For the redirectory buttons -- ALL, Music, Podcasts, Playlists*/
+.redirectory-bar {
+    display: flex;           /* puts the items in a row */
+    gap: 8px;                /* space between them */
+    flex-wrap: wrap;         /* drops to a second line on narrow screens */
+    margin: 12px 0;
+}
+
+.redirectory {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #242424;
+    border-radius: 20px;
+    padding: 0 16px;         /* replaces the fixed width: 120px */
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.redirectory:hover {
+    background-color: #333;
+}
+
+.redirectory p {
+    margin: 8px 0;           /* removes the large default gaps that made them tall */
+}
+
+.redirectory.active {
+    background-color: #fff;
+    color: #000;
+}
+
+
+/*---- SONGS AND PLAYLISTS ----
+--- SONGS --- */
+.content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+/* The card itself: solid background */
+.card {
+    position:relative;
+    background-color: #181818;     
+    padding: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.card:hover {
+    background-color: #282828;     
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);        
+}
+
+.card:active { transform: scale(0.97); }
+
+/* Song image inside the card */
+.card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;               /* keeps it square */
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 12px;
+}
+
+.card-title {
+    margin: 0;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;       /* songs with long titles end with "..." */
+}
+
+.card-sub {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #B3B3B3;
+}
+
+/* sidebar links */
+.left-sidebar a h4 {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s, transform 0.2s;
+}
+.left-sidebar a:hover h4 { transform: translateX(4px); }
+
+/*Animation: Song image pop*/
+.pop { animation: coverPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+@keyframes coverPop {
+    from { opacity: 0; transform: scale(0.8) rotate(-3deg); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* --- MAIN CONTENT: Premium page --- */
+.plans {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+    height: 650px;
+}
+
+.plan {
+    background-color: #181818;
+    padding: 20px;
+    border-radius: 8px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.plan:hover { transform: translateY(-6px); }
+
+.plan h3 {
+    margin: 0 0 8px; 
+    font-size: xx-large;   
+}
+
+.plan-price {
+    color: #B3B3B3;
+    margin: 0 0 12px;
+}
+
+.plan ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.plan-student {
+    border:2px dotted rgb(0, 128, 255)
+}
+.plan-premium {
+    border: 2px solid #00aeff;   /* highlights the premium card */
+}
+
+/* ---- Premium page: plan buttons ---- */
+.plan-btn {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 16px;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 500px;
+    background: #0b7fd1;                 /*Button and font color sync */
+    color: #fff;
+    font: inherit;
+    font-weight: bold;
+    line-height: 1.3;                    /* long labels can wrap to two lines */
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+.plan-btn:hover { background: #00aeff; transform: scale(1.03); }
+
+.plan-btn.subscribed {                   /* gray = your current plan */
+    background: #535353;
+    color: #d9d9d9;
+    cursor: default;
+}
+.plan-btn.subscribed:hover { background: #535353; transform: none; }
+.plan-btn:disabled { opacity: 1; }
+
+
+
+
+
+
+/*------- LEFT SIDEBAR NAVIGATION -------*/
+.left-sidebar {
+    grid-area: left;
+    background-color: rgb(16, 16, 16);
+    border-radius: 8px;
+    margin: 4px;
+    padding: 8px;
+    box-sizing: border-box;            
+    overflow-y: auto;                  
+    display: flex;                     
+    flex-direction: column;
+    gap: 4px;
+    
+}
+.left-sidebar a {
+  text-decoration: none;   
+  color: #B3B3B3; 
+           
+}
+.left-sidebar a h4 {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s; 
+}
+.left-sidebar a:hover h4 {
+  color: #fff;
+  background: #282828;
+}
+
+/* for Page view: Home/Library/Premium */
+.view[hidden] {
+    display: none;
+}
+
+.left-sidebar a.active h4 {          /* highlights page the user is currently on */
+    color: #fff;
+    background: #282828;
+}
+
+/* Page pop-in: Animation plays every time you switch pages */
+.view:not([hidden]) {
+    animation: viewIn 0.2s ease-out; 
+}
+
+@keyframes viewIn { from { opacity: 0; } to { opacity: 1; } }
+
+
+
+/*------ RIGHT SIDEBAR NAVIGATION ------ */
+.right-sidebar {
+    grid-area:right;
+    background-color: rgb(16, 16, 16);
+    border-radius: 8px;
+    margin: 4px;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow-y:auto;
+    
+}
+
+/*Right sidebar toggling*/
+.app-grid.right-toggled { 
+    --right-sidebar-w: 0px;
+}
+.app-grid.right-toggled .right-sidebar {
+    display: none;
+}
+
+.now-playing-img { /*song image for the right sidebar*/
+    display:block;
+    margin: 0 auto;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+/* ---Switching between Song image / music video --- */
+.np-media {
+    position: relative;
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+.np-video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;          /* videos that aren't 16:9 get black bars instead of being cropped */
+    background: #000;
+    border-radius: 20px;
+}
+
+/* the display rules above would otherwise override the hidden attribute */
+.now-playing-img[hidden],
+.np-video[hidden],
+.mv-toggle[hidden] { display: none; }
+
+/* the switch button, in the corner */
+.mv-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.65);
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: background 0.2s, transform 0.2s;
+}
+.mv-toggle:hover { background: #00aeff; transform: scale(1.1); }
+
+/* lyrics */
+#lyrics-box {
+    position: relative;      
+    max-height: 350px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.lyric-line {
+    margin: 8px 0;
+    font-size: 27px;
+    font-weight: 700;
+    padding:10px;
+    color: #4b5a7d;
+    opacity: 0.5;
+    transition: opacity 0.3s, color 0.3s;
+    white-space: pre-line;
+}
+
+.lyric-line.active {
+    opacity: 1;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Queue and Recently Played */
+.side-section{
+    margin-top: 20px;
+    padding: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 10px;
+    background-color: rgba(0, 5, 21, 0.615);
+    border: 2px solid rgba(0, 66, 159, 0.75);
+    min-height: 110px;
+   
+}
+.side-section h3{
+    margin: 0 0 8px;
+}
+.side-empty{
+    color: #253142;
+    font-size: 20px;
+    margin: 0;
+}
+
+/* scrolling text for titles that are too long */
+.marquee {
+    display: inline-block;
+    white-space: nowrap;
+}
+.marquee.scrolling {
+    animation: marquee-slide var(--dur, 6s) ease-in-out infinite alternate;
+}
+.marquee-box {
+    text-overflow: clip !important;
+}
+
+@keyframes marquee-slide {
+    0%, 15%   { transform: translateX(0); }
+    85%, 100% { transform: translateX(var(--shift, 0px)); }
+}
+
+/* in the queue and recently played lists, scroll only while hovering a row */
+.pl-info .marquee.scrolling { animation-play-state: paused; }
+.pl-row:hover .pl-info .marquee.scrolling { animation-play-state: running; }
+
+/* ---- Advertisement (right sidebar) ---- */
+#ad-box { margin-bottom: 12px; }
+
+.ad-label {
+    margin: 0 0 8px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #B3B3B3;
+}
+
+#ad-video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    background: #000;
+    border-radius: 20px;
+}
+
+.ad-skip {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 500px;
+    background: #fff;
+    color: #000;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+.ad-skip:hover:not(:disabled) { background: #00aeff; color: #fff; transform: scale(1.03); }
+.ad-skip:disabled { background: #535353; color: #d9d9d9; cursor: default; }
+
+.ad-skip[hidden],
+#ad-box[hidden] { display: none; }
+
+/* while an ad plays, hide everything else in the sidebar so the ad takes over */
+.right-sidebar.ad-active > :not(#ad-box) { display: none; }
+
+
+/*------- PLAYER/FOOTER------- */
+.player {
+    grid-area: player;
+    background-color: rgba(36, 40, 59, 0.54);
+    border-top: 2px solid rgba(0, 106, 255, 0.75);
+    border-radius: 15px;
+    display:flex;
+    align-items: center;
+    padding: 10px;
+    
+    
+}
+.track-info {
+    width:auto;
+}
+.track-info p { /*song title appearance*/
+    margin:0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow:clip;
+
+}
+.subtitle { /*song artist appearance*/
+    color:rgb(141, 140, 140);
+}
+
+/*for cases when the song title/artist is too long*/
+.player .track-info {
+    flex: 0 0 400px;      /* fixed width: won't grow or shrink */
+    width:  400px;
+    min-width: 0;         /* lets the text be clipped instead of stretching the box */
+}
+
+.Song-img {  /*song image for the player*/
+    display:block;
+    flex:none;
+    margin: 15px;
+    border-radius: 10px;
+    width: 55px;
+    height: 55px;
+}
+
+/*play/pause button design*/
+.controls {
+    display: flex;
+    flex-direction: column; /*this places the buttons on top and the progress bar below*/
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    max-width: 500px;
+    margin: 0 auto;  
+    
+}
+.controls button {
+    background: none;
+    border: none;
+    color: #B3B3B3;
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+}
+.controls button:hover {
+    color: #fff;
+    transform: scale(1.1);
+}
+.controls button.active {
+    color: #00aeff;
+}
+#play-btn {
+    background: #ffffff;
+    color: #000000;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 16px;
+}
+
+.progress-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    font-size: 12px;
+    color: #B3B3B3;
+}
+
+.progress-row span {
+    min-width: 36px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;   /* stops the numbers from jiggling */
+}
+
+/* progress bar */
+#seek-bar {
+    --progress: 0%;
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    background: linear-gradient(to right, #fff var(--progress), #4d4d4d var(--progress));
+}
+#seek-bar:hover {
+    background: linear-gradient(to right, #00aeff var(--progress), #4d4d4d var(--progress));
+}
+#seek-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0;                           /* only shows on hover */
+    transition: opacity 0.2s;
+}
+#seek-bar:hover::-webkit-slider-thumb { opacity: 1; }
+#seek-bar::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border: none;
+    border-radius: 50%;
+    background: #fff;
+}
+
+/* volume controls */
+.volume {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: none;
+    margin-right: 12px;
+}
+
+#mute-btn {
+    background: none;
+    border: none;
+    color: #B3B3B3;
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+}
+#mute-btn:hover {
+    color: #fff;
+    transform: scale(1.1);
+}
+
+#volume-bar {
+    --volume: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100px;
+    height: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    background: linear-gradient(to right, #fff var(--volume), #4d4d4d var(--volume));
+}
+#volume-bar:hover {
+    background: linear-gradient(to right, #00aeff var(--volume), #4d4d4d var(--volume));
+}
+#volume-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+#volume-bar:hover::-webkit-slider-thumb { opacity: 1; }
+#volume-bar::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border: none;
+    border-radius: 50%;
+    background: #fff;
+}
+
+
+/*for the small icon on the right footer, to toggle the right sidebar */
+#now-playing-btn {    
+    background-color: rgb(0, 26, 42);
+    flex:none;
+    border: none;
+    color: #B3B3B3;
+    font-size: 20px;
+    width: 36px;
+    height: 36px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: color 0.2s, transform 0.2s;
+}
+
+#now-playing-btn:hover {
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/*----FOR PLAYLISTS ----
+the "+" button on song cards */
+.add-btn {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s, background 0.2s;
+}
+.card:hover .add-btn { opacity: 1; }
+.add-btn:hover { transform: scale(1.1); background: #00aeff; }
+@media (hover: none) { .add-btn { opacity: 1; } }   /* touch screens have no hover */
+
+/* "Create playlist" card */
+.create-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 200px;
+    background: transparent;
+    border: 2px dashed #4d4d4d;
+}
+.create-card i { font-size: 32px; }
+
+/* the "add to playlist" pop-up menu */
+#pl-menu {
+    position: fixed;
+    z-index: 100;
+    min-width: 180px;
+    max-height: 260px;
+    overflow-y: auto;
+    padding: 6px;
+    background: #282828;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+#pl-menu p { margin: 6px 10px; font-size: 12px; color: #B3B3B3; }
+#pl-menu button {
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    text-align: left;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font: inherit;
+    cursor: pointer;
+}
+#pl-menu button:hover { background: #3a3a3a; }
+
+/* playlist page */
+.pl-actions { display: flex; gap: 8px; margin: 16px 0; }
+.pl-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 500px;
+    background: #fff;
+    color: #000;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+#pl-delete { background: #282828; color: #fff; }
+
+.pl-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.pl-row:hover { background: #282828; }
+.pl-row img { width: 48px; height: 48px; border-radius: 4px; object-fit: cover; flex: none; }
+.pl-info { flex: 1; min-width: 0; }
+.pl-info p { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pl-artist { color: #B3B3B3; font-size: 13px; }
+.pl-remove { background: none; border: none; color: #B3B3B3; font-size: 16px; cursor: pointer; }
+.pl-remove:hover { color: #fff; }
+
+/*------- FULL-SCREEN PLAYER -------*/
+footer.player { cursor: pointer; }           /* hints that the bar can be clicked */
+
+/*becomes full screen when the user clickes the footer / player bar */
+.full-player {
+    display: none;                           
+    position: fixed;
+    inset: 0;                                
+    z-index: 200;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 12px 24px calc(16px + env(safe-area-inset-bottom, 0px));
+    background: #000 linear-gradient(to bottom, rgba(1, 1, 255, 0.356), black);
+}
+.full-player.open { display: flex; }
+
+
+/* THE FULL SCREEN BACKGROUND WHEN A SONG WITH NO THEME IS PLAYING
+   Three layers, drawn from top to bottom:
+     1. a see-through black layer, so the white title/artist stay readable
+     2. the song picture (fills the screen, crops the edges if needed)
+     3. solid black behind everything */
+.full-player.has-song-theme {
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.85)),
+        var(--fs-theme) center / cover no-repeat,
+        #000;
+}
+
+
+.fs-close {
+    align-self: flex-start;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 28px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.fs-close:hover { transform: scale(1.15); }
+
+/* Full screen is split in half
+----TOP HALF: Song Image / Muwic Video, and Track info----*/
+.fs-top {
+    flex: 1 1 0;                             
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+.fs-media { flex: none; }
+.fs-media .np-media {
+    width: fit-content;
+    max-width: none;
+    margin: 0;
+    height: min(80vh, 330px);                /* image and video both fit the top half */
+}
+.fs-media .now-playing-img { width: auto; height: 100%; max-width: none; }
+.fs-media .np-video        { width: auto; height: 100%; }
+
+.fs-info { min-width: 0; }
+.fs-info h2 { margin: 0; font-size: clamp(24px, 3.5vw, 48px); }
+.fs-info p  { margin: 8px 0 0; color: #B3B3B3; font-size: clamp(14px, 1.6vw, 20px); }
+
+/* BOTTOM HALF: lyrics */
+.fs-lyrics {
+    position: relative;
+    flex: 1 1 0;
+    min-height: 0;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.35);
+}
+.fs-lyrics #lyrics-box {
+    position: absolute;
+    inset: 0;
+    max-height: none;                        
+    padding: 8px 16px;
+}
+.fs-lyrics .lyric-line { font-size: clamp(22px, 3vw, 36px); }
+
+/* CONTROLS */
+.fs-controls { flex: none; padding-top: 12px; }
+.fs-controls .controls { max-width: 700px; width: 100%; margin: 0 auto; }
+.fs-controls .control-buttons { display: flex; align-items: center; gap: 12px; }
+.fs-controls .controls button { font-size: 26px; }
+.fs-controls #play-btn { width: 52px; height: 52px; font-size: 22px; padding: 0; }
+
+/* WHEN OPENED ON THE PHONE: 
+    first screen = image/video + buttons, scroll down = lyrics */
+@media (max-width: 767px) {
+    .full-player {
+        padding: 8px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+        overflow-y: auto;                   
+        overflow-x: hidden;
+    }
+    .fs-close { flex: none; }                /*stops items from squishing when the page scrolls */
+
+    .fs-top {
+        flex: none;                           /* fixed height, so the buttons sit at the bottom of the first screen */
+        flex-direction: column;
+        justify-content: center;
+        height: calc(100vh - 190px);          /* 190px = space kept for the close arrow + buttons + progress bar */
+        height: calc(100dvh - 190px - env(safe-area-inset-bottom, 0px));
+    }
+    .fs-media .np-media { height: auto; width: min(88vw, 48vh); }
+    .fs-media .now-playing-img,
+    .fs-media .np-video { width: 100%; height: auto; }
+
+    .fs-controls { flex: none; order: 1; }   /* the player buttons come right after the image */
+    .fs-controls #play-btn { width: 60px; height: 60px; }
+
+    .fs-lyrics {                             
+        display: block;
+        flex: none;
+        order: 2;                            /*the lyrics come last, below the progress bar */
+        height: 500px;
+        margin-top: 16px;
+        padding: 8px 0 32px;
+    }
+}
+
+/* ---- music icon for instrumental parts ---- */
+.music-line i { display: inline-block; font-size: 1.1em; }
+.music-line.active i { animation: music-bounce 1s ease-in-out infinite; }
+@keyframes music-bounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-5px); }
+}
+
+/* ---- small translation text under a lyric ---- */
+.lyric-sub {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.55em;                /* about half the size of the main lyric */
+    font-weight: 500;
+    line-height: 1.3;
+    color: inherit;                   /* dims and brightens together with the main lyric */
+}
+.lyric-sub:empty { display: none; }   /* no empty gap when there is nothing to show */
+
+/* ---- translate button ---- */
+.lyrics-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.lyrics-head h3 { margin: 0 0 8px; }
+
+.tr-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 500px;
+    background: #282828;
+    color: #B3B3B3;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;     
+    transition: color 0.2s, background 0.2s, transform 0.2s;
+}
+.tr-btn:hover { color: #fff; transform: scale(1.05); }
+.tr-btn.active { background: #00aeff; color: #fff; }   /* lit up while a translation is showing */
+.tr-btn[hidden] { display: none; }
+
+/* in full screen: the button sits in the corner of the lyrics area */
+.fs-lyrics .tr-btn { position: absolute; top: 10px; right: 14px; z-index: 2; }
+.fs-lyrics #lyrics-box { padding-top: 48px; }   /* keeps the first lyric from hiding under the button */
+
+/* ---- Advertisement inside the full-screen player ---- */
+.full-player.ad-active .np-media { display: none; }   /* the ad replaces the cover image / music video */
+
+.fs-media #ad-box { position: relative; margin: 0; }
+.fs-media #ad-video { width: auto; height: min(80vh, 330px); }
+
+/* label and skip button sit on top of the video so the layout keeps its height */
+.fs-media .ad-label {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    z-index: 1;
+    margin: 0;
+    padding: 3px 10px;
+    border-radius: 500px;
+    background: rgba(0, 0, 0, 0.65);
+}
+.fs-media .ad-skip {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    width: auto;
+    margin: 0;
+    padding: 8px 16px;
+}
+
+
+/*MUST BE AT THE LAST PART OF THE CSS FILE 
+(rules placed at the top get overridden by the same properties written later/at the bottom) 
+
+---For ALL scrollbars---
+(Chrome, Edge, Safari browsers)*/
+.main-content::-webkit-scrollbar-track,
+.left-sidebar::-webkit-scrollbar-track,
+.right-sidebar::-webkit-scrollbar-track,
+.fs-lyrics::-webkit-scrollbar-track,
+.full-player::-webkit-scrollbar-track {
+    background: transparent;        /* the groove behind the thumb */
+}
+
+.main-content::-webkit-scrollbar-thumb,
+.left-sidebar::-webkit-scrollbar-thumb,
+.right-sidebar::-webkit-scrollbar-thumb, 
+.fs-lyrics::-webkit-scrollbar-thumb,
+.full-player::-webkit-scrollbar-thumb {
+    background: #535353;            /* the draggable part */
+    border-radius: 10px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover,
+.left-sidebar::-webkit-scrollbar-thumb:hover,
+.right-sidebar::-webkit-scrollbar-thumb:hover,
+.fs-lyrics::-webkit-scrollbar-thumb:hover, 
+.full-player::-webkit-scrollbar-thumb:hover {
+    background: #1e93c9;            /*color changes on hover */
+}
+
+/*(Firefox browser)*/
+.main-content,
+.left-sidebar,
+.right-sidebar,
+.full-player,
+.fs-lyrics {
+    scrollbar-width: thin;                  
+    scrollbar-color: #535353 transparent;      
+}
+
+
+/* Tablet screen size*/
+@media (max-width: 1023px){
+    :root { --right-sidebar-w: 0px; }
+    .left-sidebar{padding: 6px}
+    #volume-bar { width: 70px; }
+
+    /* hidden by default, becomes a popup when toggled */
+    .right-sidebar {
+        display: none;
+        position: fixed;
+        top: var(--heading-h);
+        right: 0;
+        bottom: var(--player-h);   
+        width: 390px;
+        max-width: 90vw;
+        z-index: 20;
+        box-shadow: -4px 0 16px rgba(0, 0, 0, 0.6);
+    }
+    .app-grid.right-toggled .right-sidebar {
+        display: block;
+    }
+}
+
+/* Phone screen size */
+@media (max-width: 767px) {
+    .volume { display: none; }
+    :root { --nav-h: 60px; }
+    
+    /* one column, with a navigation row under the player */
+    .app-grid {
+        height: 100vh;
+        height: 100dvh;                      /* keeps the bar above the phone browser's own toolbar */
+        grid-template-columns: 1fr;
+        grid-template-rows: var(--heading-h) minmax(0, 1fr) var(--player-h) var(--nav-h);
+        grid-template-areas:
+            "heading"
+            "main"
+            "player"
+            "left";
+    }
+
+    /* the left sidebar becomes the bottom navigation bar */
+    .left-sidebar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: stretch;
+        gap: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    .left-sidebar br { display: none; }       /* removes the blank spacing lines */
+
+    .left-sidebar a {
+        flex: 1;
+        min-width: 0;
+    }
+    .left-sidebar a h4 {
+        display: flex;
+        flex-direction: column;               /* icon on top, label underneath */
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        box-sizing: border-box;
+        padding: 4px 2px;
+        font-size: 11px;
+        text-align: center;
+    }
+    .left-sidebar a h4 i {
+        font-size: 20px;
+    }
+
+    /* no right sidebar toggle on phones */
+    .app-grid.right-toggled .right-sidebar { display: none; }
+    #now-playing-btn { display: none; }
+
+    /*for long song titles/artists*/
+    .player .track-info {
+        flex:  100px;      
+        width: 100px;
+        min-width: 0;         
+    }
+
+    .player .track-info p{
+        width:165px;
+        white-space: nowrap;
+        overflow: hidden;
+
+    }
+}

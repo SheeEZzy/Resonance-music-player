@@ -1,0 +1,667 @@
+<!--HTML for the BSIT - 1A Extended Project: Spotify
+Lavina, Linux. de la Cerna, Joseph. Bono, Chino. Canada, Miguel.
+App name: Resonance-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"> <!--responsive web design-->
+        <link rel="stylesheet" href="Rsnce_styles.css"> <!--CSS integration-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"> <!--for the icons-->
+
+        <title>Resonance - BSIT-1A project</title>
+    </head>           
+    
+    
+    <body>
+    <div class="app-grid">
+        
+    <!--HEADING & SEARCH BAR-->
+        <header class="heading">
+            <img class="logo" src="Resonance.Logo.png" alt="Resonance" data-view="home"> <!--LOGO-->
+            <input type="search" class="search-bar" placeholder="What do you want to play?" aria-label="Search">
+        </header>
+
+    <!--LEFT SIDEBAR-->
+        <div class="left-sidebar">
+            <br><br>
+
+            <!--Navigation/page view links-->
+            <a href="#home" data-view="home"><h4><i class="bi bi-house-door-fill"></i><span> Home </span></h4></a>
+            <a href="#library" data-view="library"><h4><i class="bi bi-collection-fill"></i><span> Library </span></h4></a>
+            <a href="#premium" data-view="premium"><h4><i class="bi bi-gem"></i><span> Premium </span></h4></a>
+
+            <!--Create playlist shortcut-->
+            <a href="#" id="side-create"><h4><i class="bi bi-plus-square-fill"></i><span> New playlist </span></h4></a>
+
+        </div> 
+
+    <!--MAIN CONTENT-->
+        <div class="main-content"> <!--parent container-->
+            
+            <!-- |=-=-=-=-=-=-=-=- HOME PAGE =-=-=-=-=-=-=-=-=-=| -->
+            <section class="view" id="view-home">
+                <img class="home-logo" src="Resonance.Logo2.png" alt="Resonance logo">
+                <div class="home">
+                    <br><br><br><br><br><br><br><br>
+                    <h1 id="greeting"></h1> <!--automated greeting: based on UTC+8-->
+                    <p>Plug in your Headphones, Tune in, and discover your frequencies!</p>
+                </div>
+
+                <br><br><br><br><br><br><br><br><br>
+                <br><br><br><br><br><br>
+                
+                <!-- ---------THEMES ---------
+                    There are now TWO separate theme areas:
+                    1. site-theme  -> the look of the whole website (only a preview, "coming soon")
+                    2. song-theme  -> background pictures for the FULL-SCREEN PLAYER only -->
+
+                <h3>Try out our Premium themes! (Coming Soon!)</h3>
+                
+                <div class="themes">
+                    <div class="theme">
+                        <h4>Default</h4>
+                        <img src="Original_Theme.png">
+                    </div>
+
+                    <div class="theme">
+                        <h4>Custom Theme 1</h4>
+                        <img src="Default_theme1.png">
+                    </div>
+
+                    <div class="theme">
+                        <h4>Custom Theme 2</h4>
+                        <img src="Default_theme2.png">
+                    </div>
+
+                    <div class="theme">
+                        <h4>Custom Theme 3</h4>
+                        <img src="Default_theme3.png">
+                    </div>
+                </div>
+                
+
+                <br><br><br><br>
+            </section>
+
+
+            <!-------*** LIBRARY PAGE ***------->
+            <section class="view" id="view-library" hidden>
+                <h2>The music library</h2>
+
+
+                <!--Redirectory Filters-->
+                <div class="redirectory-bar">
+                    <div class="redirectory active" data-filter="all"><p>All</p></div>
+                    <div class="redirectory" data-filter="music"><p>Music</p></div>
+                    <div class="redirectory" data-filter="playlists"><p>Playlists</p></div>
+                </div>
+
+             <!------SONGLIST AND PLAYLISTS--------->
+                
+             <h3 data-category="playlists">Your Playlists</h3> <!--Playlist Group-->
+                <div class="content" id="playlist-grid"></div>
+
+                <h3 data-category="music">Available Songs</h3> <!--Songs Group-->
+                <div class="content"> 
+                    <div class="card" data-category="music"
+                        data-src="nightdancer.mp3"
+                        data-title="Night Dancer"
+                        data-artist="imase"
+                        data-img="Song_Night_Dancer.png">
+                        <img src="Song_Night_Dancer.png" alt="Night Dancer">
+                        <p class="card-title"> Night Dancer </p>
+                        <p class="card-sub"> imase </p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="fallenPetals.mp3"
+                        data-title="Fallen Petals"
+                        data-artist="Wuthering Waves & Fleet Snowfluff"
+                        data-img="Song_Fallen_Petals.png">
+                        <img src="Song_Fallen_Petals.png" alt="Fallen Petals">
+                        <p class="card-title"> Fallen Petals </p>
+                        <p class="card-sub"> Wuthering Waves & Fleet Snowfluff </p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="Overdose.mp3"
+                        data-title="Overdose"
+                        data-artist="natori"
+                        data-img="Song_Overdose.png">
+                        <img src="Song_Overdose.png" alt="Overdose">
+                        <p class="card-title"> Overdose </p>
+                        <p class="card-sub"> natori</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="AllForOne.mp3"
+                        data-title="All for One"
+                        data-artist="Hololive (English)"
+                        data-img="Song_AllForOne.png"
+                        data-video="AllForOne.mp4">
+                        <img src="Song_AllForOne.png" alt="All for One">
+                        <p class="card-title">All for One</p>
+                        <p class="card-sub">Hololive (English)</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="Bling-Bang-Bang-Born.mp3"
+                        data-title="Bling-Bang-Bang-Born「マッシュル-MASHLE-」"
+                        data-artist="Creepy Nuts"
+                        data-img="Song_Mashle.png"
+                        data-video="Bling-Bang-Bang-Born.mp4">
+                        <img src="Song_Mashle.png" alt="Mashle">
+                        <p class="card-title"> Bling-Bang-Bang-Born「マッシュル-MASHLE-」</p>
+                        <p class="card-sub"> Creepy Nuts </p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="SUPERNOVA.mp3"
+                        data-title="SUPERNOVA"
+                        data-artist="白上フブキ (Shirakami Fubuki)"
+                        data-img="Song_SUPERNOVA.png"
+                        data-video="SUPERNOVA.mp4">
+                        <img src="Song_SUPERNOVA.png" alt="SUPERNOVA">
+                        <p class="card-title">SUPERNOVA</p>
+                        <p class="card-sub">白上フブキ (Shirakami Fubuki)</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="Show-Ado.mp3"
+                        data-title="Show【唱】"
+                        data-artist="Ado"
+                        data-img="Song_Show-Ado.png">
+                        <img src="Song_Show-Ado.png" alt="Show">
+                        <p class="card-title">Show【唱】</p>
+                        <p class="card-sub"> Ado </p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="TeamTomodachiCover.mp3"
+                        data-title="Team Tomodachi【HoloAdvent Cover】"
+                        data-artist="Hololive English -Advent-"
+                        data-img="Song_TeamTomodachi.png"
+                        data-video="TeamTomodachi.mp4">
+                        <img src="Song_TeamTomodachi.png" alt="Team Tomodachi">
+                        <p class="card-title">Team Tomodachi【HoloAdvent Cover】</p>
+                        <p class="card-sub">Hololive English -Advent-</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="Human.mp3"
+                        data-title="Human"
+                        data-artist="Rag'n'bone Man"
+                        data-img="Song_Human.png"> 
+                        <img src="Song_Human.png" alt="Human">
+                        <p class="card-title"> Human </p>
+                        <p class="card-sub"> Rag'n'bone Man </p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="BreakingDimensions.mp3"
+                        data-title="Breaking Dimensions"
+                        data-artist="Hololive (English)"
+                        data-img="Song_BreakingDimensions.png"
+                        data-video="BreakingDimensions.mp4">
+                        <img src="Song_BreakingDimensions.png" alt="Breaking Dimensions">
+                        <p class="card-title">Breaking Dimensions</p>
+                        <p class="card-sub">Hololive (English)</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="GodZilla.mp3"
+                        data-title="Godzilla"
+                        data-artist="Eminem ft. Juice WRLD"
+                        data-img="Song_Godzilla.png">
+                        <img src="Song_Godzilla.png" alt="Godzilla">
+                        <p class="card-title"> Godzilla </p>
+                        <p class="card-sub">Enimem ft. Juice WRLD</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="IreallyWantToStayAtYourHouse.mp3"
+                        data-title="I Really Want to Stay at Your House"
+                        data-artist="Rosa Walton & Hallie Coggins"
+                        data-img="Song_IreallyWantToStayAtYourHouse.png"
+                        data-video="IreallyWantToStayAtYourHouse.mp4">
+                        <img src="Song_IreallyWantToStayAtYourHouse.png" alt="IreallyWantToStayAtYourHouse">
+                        <p class="card-title"> I Really Want to Stay at Your House </p>
+                        <p class="card-sub"> Rosa Walton & Hallie Coggins </p>
+                    </div>
+
+
+                    <div class="card" data-category="music"
+                        data-src="GoldTriumph.mp3"
+                        data-title="Gold Triumph"
+                        data-artist="Uma Musume: Pretty Derby"
+                        data-img="Song_Gold_Triumph.png">
+                        <img src="Song_Gold_Triumph.png" alt="Gold Triumph">
+                        <p class="card-title">Gold Triumph</p>
+                        <p class="card-sub">Uma Musume: Pretty Derby</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="UnfinishedJourney.mp3"
+                        data-title="Unfinished Journey"
+                        data-artist="Wuthering Waves, Skywalker, and jkinss"
+                        data-img="Song_Unfinished_Journey.jpeg">
+                        <img src="Song_Unfinished_Journey.jpeg" alt="Unfinished Journey">
+                        <p class="card-title"> Unfinished Journey </p>
+                        <p class="card-sub">Wuthering Waves, Skywalker, and jkinss </p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="AgainstAllFate.mp3"
+                        data-title="Against All Fate「HI3 x  Cod:M」"
+                        data-artist="Casey Cook"
+                        data-img="Song_Against_All_Fate.png">
+                        <img src="Song_Against_All_Fate.png" alt="Against All Fate">
+                        <p class="card-title">Against All Fate「HI3 x Cod:M」</p>
+                        <p class="card-sub">Casey Cook</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="Paparazzi(Dubstep).mp3"
+                        data-title="Paparazzi (Dubstep)"
+                        data-artist="Alximo"
+                        data-img="Song_Paparazzi.png">
+                        <img src="Song_Paparazzi.png" alt="Paparazzi">
+                        <p class="card-title"> Paparazzi (Dubstep) </p>
+                        <p class="card-sub"> Alximo </p>
+                    </div>
+
+                    
+                    <div class="card" data-category="music"
+                        data-src="MagicalCureLoveShot!.mp3"
+                        data-title="M@GICAL CURE! LOVE SHOT! (feat.Hatsune Miku)"
+                        data-artist="SAWTOWNE, Hatsune Miku"
+                        data-img="Song_MagicalCureLoveShot.png">
+                        <img src="Song_MagicalCureLoveShot.png" alt="MagicalCureLoveShot">
+                        <p class="card-title"> M@GICAL CURE! LOVE SHOT! (feat.Hatsune Miku) </p>
+                        <p class="card-sub">SAWTOWNE, Hatsune Miku</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="Inferno-FireForce.mp3"
+                        data-title="Inferno「Fire Force」"
+                        data-artist="Mrs. GREEN APPLE"
+                        data-img="Song_Inferno.png">
+                        <img src="Song_Inferno.png" alt="Inferno">
+                        <p class="card-title"> Inferno「Fire Force」</p>
+                        <p class="card-sub"> Mrs. GREEN APPLE </p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="CarbonatedLove.mp3"
+                        data-title="Carbonated Love"
+                        data-artist="IRyS Ch. hololive"
+                        data-img="Song_CarbonatedLove.png">
+                        <img src="Song_CarbonatedLove.png" alt="Carbonated Love">
+                        <p class="card-title">Carbonated love</p>
+                        <p class="card-sub">IRyS Ch. hololive</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="ForeverYoung.mp3"
+                        data-title="Forever Young『Initial D Soundtrack』"
+                        data-artist="Andrea Clerici and Simone Valeo"
+                        data-img="Song_Forever_Young.png">
+                        <img src="Song_Forever_Young.png" alt="Forever Young">
+                        <p class="card-title">Forever Young『Initial D Soundtrack』</p>
+                        <p class="card-sub">Andrea Clerici and Simone Valeo</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="TimelessPower.mp3"
+                        data-title="Timeless Power 『MFゴースト Soundtrack』"
+                        data-artist="Yū Serizwa ft. MOTSU TV"
+                        data-img="Song_Timeless_Power.png">
+                        <img src="Song_Timeless_Power.png" alt="Timeless Power">
+                        <p class="card-title">Timeless Power 『MFゴースト Soundtrack』</p>
+                        <p class="card-sub">Yū Serizwa ft. MOTSU TV</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="StarryNight.mp3"
+                        data-title="Starry Night 『Wangan Midnight Soundtrack』"
+                        data-artist="Yuzo Koshiro feat. SAK."
+                        data-img="Song_Starry_Night.png">
+                        <img src="Song_Starry_Night.png" alt="Starry Night">
+                        <p class="card-title">Starry Night 『Wangan Midnight Soundtrack』</p>
+                        <p class="card-sub">Yuzo Koshiro feat. SAK.</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="ImThinkingMiku.mp3"
+                        data-title="Miku"
+                        data-artist="Anamanaguchi, Hatsune Miku"
+                        data-img="Song_Miku.png">
+                        <img src="Song_Miku.png" alt="Miku">
+                        <p class="card-title"> Miku </p>
+                        <p class="card-sub"> Anamanaguchi, Hatsune Miku </p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="UmapyoiLegend.mp3"
+                        data-title="うまぴょい伝説 (Umapyoi Legend)"
+                        data-artist="Uma Musume: Pretty Derby JP Cast"
+                        data-img="Song_UmapyoiLegend.png">
+                        <img src="Song_UmapyoiLegend.png" alt="Umapyoi Legend">
+                        <p class="card-title"> うまぴょい伝説 (Umapyoi Legend) </p>
+                        <p class="card-sub"> Uma Musume: Pretty Derby JP Cast </p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="BiiG.mp3"
+                        data-title="Biiig"
+                        data-artist="Bigbang"
+                        data-img="Song_Biig.png">
+                        <img src="Song_Biig.png" alt="Biiig">
+                        <p class="card-title">Biiig</p>
+                        <p class="card-sub">Bigbang</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="BangBangBang.mp3"
+                        data-title="Bang Bang Bang"
+                        data-artist="Bigbang"
+                        data-img="Song_BangBangBang.png">
+                        <img src="Song_BangBangBang.png" alt="BangBangBang">
+                        <p class="card-title">Bang Bang Bang</p>
+                        <p class="card-sub">Bigbang</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="LegendCharger.mp3"
+                        data-title="Legend Changer"
+                        data-artist="Uma Musume: Pretty Derby"
+                        data-img="Song_LegendChanger.jpg">
+                        <img src="Song_LegendChanger.jpg" alt="Legend Charger">
+                        <p class="card-title">Legend Changer</p>
+                        <p class="card-sub">Uma Musume: Pretty Derby</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="RacingIntoTheNight.mp3"
+                        data-title="Racing Into the Night"
+                        data-artist="YOASOBI"
+                        data-img="Song_RacingIntoTheNight.png">
+                        <img src="Song_RacingIntoTheNight.png" alt="RacingIntoTheNight">
+                        <p class="card-title">Racing Into The Night</p>
+                        <p class="card-sub">YOASOBI</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="CantGetOverYou.mp3"
+                        data-title="CAN'T GET OVER YOU"
+                        data-artist="Joji ft. Clams Casino"
+                        data-img="Song_Can'tGetOverYou.png">
+                        <img src="Song_Can'tGetOverYou.png" alt="CantGetOverYou">
+                        <p class="card-title">CAN'T GET OVER YOU</p>
+                        <p class="card-sub">Joji ft. Clams Casino</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="Drifting.mp3"
+                        data-title="Drifting"
+                        data-artist="Akasaki"
+                        data-img="Song_Drifting.png">
+                        <img src="Song_Drifting.png" alt="Drifting">
+                        <p class="card-title">Drifting</p>
+                        <p class="card-sub">Akasaki</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="WhoKnows.mp3"
+                        data-title="Who Knows"
+                        data-artist="Daniel Caesar"
+                        data-img="Song_Who_Knows.png">
+                        <img src="Song_Who_Knows.png" alt="Who Knows">
+                        <p class="card-title"> Who Knows </p>
+                        <p class="card-sub"> Daniel Caesar </p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="AkoAngBagyo.mp3"
+                        data-title="Ako ang Bagyo"
+                        data-artist="Shean"
+                        data-img="Song_AkoAngBagyo.png">
+                        <img src="Song_AkoAngBagyo.png" alt="Ako ang bagyo">
+                        <p class="card-title">Ako ang Bagyo</p>
+                        <p class="card-sub">Shean</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="CSTM-TikTok.mp3"
+                        data-title="Cintamu Sepahit Topi Miring (TikTok Version)"
+                        data-artist="Jogja Hip Hop Foundation"
+                        data-img="Song_CSTM_TikTok.png">
+                        <img src="Song_CSTM_TikTok.png" alt="CSTM">
+                        <p class="card-title">Cintamu Sepahit Topi Miring (TikTok Version)</p>
+                        <p class="card-sub">Jogja Hip Hop Foundation</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="BigDawgs.mp3"
+                        data-title="Big Dawgs"
+                        data-artist="Hanumankind Ft. Kalmi"
+                        data-img="Song_Big-Dawgs.png">
+                        <img src="Song_Big-Dawgs.png" alt="Big Dawgs">
+                        <p class="card-title">Big Dawgs</p>
+                        <p class="card-sub">Hanumankind Ft. Kalmi</p>
+                    </div>
+
+                    <div class="card" data-category="music"
+                        data-src="UnstoppableIndianver.mp3"
+                        data-title="Unstoppable (Indian ver.)"
+                        data-artist="Sandaru sathsara"
+                        data-img="Song_Unstopabellleee.jpg">
+                        <img src="Song_Unstopabellleee.jpg" alt="Unstoppable">
+                        <p class="card-title"> Unstoppable (Indian ver.) </p>
+                        <p class="card-sub"> Sandaru sathsara </p>
+                    </div>
+
+
+                </div>
+
+                <br><br><br>
+
+            </section>
+
+            <!-------*** PREMIUM PAGE ***------->
+            <section class="view" id="view-premium" hidden>
+                <h2>Resonance Premium</h2>
+                <p>Subscribe to Premium to unlock these special features</p><br>
+                
+                <div class="plans">
+                    <div class="plan">
+                        <h3>Resonance Free</h3>
+                        <p class="plan-price">₱0 / month</p><br><br>
+                        <button class="plan-btn" data-plan="free" data-name="Free Plan" data-price="₱0/month"></button>
+                        <br><br>
+                        <ul>
+                            <li>Resonance Free plan</li>
+                            <li>Unskippable ads</li>
+                            <li>Default theme</li>
+                            <li>Shuffle play</li>
+                            
+                        </ul>
+                    </div>
+
+                    <div class="plan plan-student">
+                        <h3>Sentinel</h3>
+                        <p class="plan-price">₱67 / month</p><br><br>
+                        <button class="plan-btn" data-plan="student" data-name="Instance+ Student" data-price="₱67/month"></button>
+                        <br><br>
+                        <ul>
+                            <li>Resonance Student plan</li>
+                            <li>3-day free trial</li>
+                            <li>1 verified premium account</li>
+                            <li>Skippable ads</li>
+                            <li>Play songs on repeat</li>
+                            <li>Download songs offline</li>
+                            <li>Access to Community themes</li>
+                            <li>Cancel anytime</li>
+                        </ul>
+                    </div>
+
+                    <div class="plan plan-premium">
+                        <h3>Arbiter+</h3>
+                        <p class="plan-price">₱100,000,000 / month</p> <br><br>
+                        <button class="plan-btn" data-plan="premium" data-name="Instance+" data-price="₱100,000,000/month"></button>
+                        <br><br>
+                        <ul>
+                            <li>Resonance Premium plan</li>
+                            <li>7-day free trial</li>
+                            <li>1 Premium account</li>
+                            <li>No ads, at all.</li>
+                            <li>Play songs on repeat</li>
+                            <li>Download songs offline</li>
+                            <li>Create your own themes!</li>
+                            <li>Access to Developer and Community themes</li>
+                            <li>Early access to new features</li>
+                            <li>Cancel anytime</li>
+                        </ul>
+                    </div>
+                </div>   
+
+            </section>
+
+
+            <!-------*** PLAYLIST PAGE ***------->
+            <section class="view" id="view-playlist" hidden>
+                <h2 id="pl-title"></h2>
+                <p class="subtitle" id="pl-count"></p>
+                <div class="pl-actions">
+                    <button id="pl-play">▶ Play</button>
+                    <button id="pl-delete">Delete playlist</button>
+                </div>
+                <div id="pl-songs"></div>
+            </section>
+        </div>
+
+    <!--RIGHT SIDEBAR-->
+    <div class="right-sidebar">
+
+        <!--ADVERTISEMENT (shown only while an ad is playing)-->
+        <div id="ad-box" hidden>
+            <p class="ad-label">Advertisement</p>
+            <video id="ad-video" playsinline preload="none"></video>
+            <button class="ad-skip" id="ad-skip" hidden>Skip ad</button>
+        </div>
+
+    <h3>Now Playing</h3>
+
+        <!--Switching between Song image / music video-->
+        <div class="np-media">
+            <img class="now-playing-img" id="np-img" src="Default_img.png" alt="Testsong">
+            <video id="np-video" class="np-video" muted playsinline preload="metadata" hidden></video>
+            <button id="mv-toggle" class="mv-toggle" aria-label="Show music video" title="Show music video" hidden>
+                <i class="bi bi-camera-video-fill"></i>
+            </button>
+        </div><br>
+
+        <div class="track-info">
+            <p style="font-size:x-large"><b id="np-title"></b></p>
+            <p class="subtitle" style="font-size:small" id="np-artist"></p>
+        </div>
+
+        <!--id="np-img" replaces the prev img with the card's img
+            id="np-title" replaces the prev title name with the card's title name
+            id="np-artist" replaces the prev artist name with the card's artist name-->
+            
+        <!--Lyrics, Queue, & Recently Played side sections-->
+        <div class="side-section side-panel">
+            <div class="lyrics-head">
+                <h3>Lyrics</h3>
+                <button class="tr-btn" id="tr-btn" aria-label="Translate lyrics" title="Translate lyrics" hidden>
+                    <i class="bi bi-translate"></i><span id="tr-label"></span> <!--Translate lyrics button-->
+                </button>
+            </div>
+            <div id="lyrics-box"></div>
+        </div>
+
+        <div class="side-section side-panel">
+            <h3>Queue</h3>
+            <div id="queue-list"></div>
+        </div>
+
+        <div class="side-section side-panel">
+            <h3>Recently Played</h3>
+            <div id="recent-list"></div>
+        </div>
+    </div>
+                    
+    <!--FOOTER/PLAYER-->
+        <footer class="player">
+            <img class="Song-img" id="player-img" src="Default_img.png" alt="Testsong">
+            <audio id="player" preload="none"></audio>
+
+            <!--music info: song title & artist-->
+            <div class="track-info"> 
+                <p style="font-size:small"><b id="player-title">Start your day with a Song!</b></p>
+                <p class="subtitle" style="font-size:smaller" id="player-artist">Head to the library & pick a song to start Resonating</p>
+            </div>
+
+            <!--music controls-->
+            <div class="controls">
+                <div class="control-buttons">
+                    <button id="shuffle-btn" aria-label="Shuffle"><i class="bi bi-shuffle"></i></button>
+                    <button id="prev-btn" aria-label="Previous">⏮</button>
+                    <button id="play-btn" aria-label="Play">▶</button>
+                    <button id="next-btn" aria-label="Next">⏭</button>
+                    <button id="repeat-btn" aria-label="Repeat"><i class="bi bi-repeat"></i></button>
+                </div>
+
+                <!--progress bar and timestamps for the song-->
+                <div class="progress-row">
+                    <span id="current-time">0:00</span>
+                    <input type="range" id="seek-bar" min="0" max="100" value="0" step="0.1" aria-label="Seek">
+                    <span id="total-time">0:00</span>
+                </div>
+            </div>
+
+            <!--Volume controls-->
+            <div class="volume">
+                <button id="mute-btn" aria-label="Mute"><i class="bi bi-volume-up-fill"></i></button>
+                <input type="range" id="volume-bar" min="0" max="1" step="0.01" value="1" aria-label="Volume">
+            </div>
+
+            <!--Now playing toggle button-->
+            <button id="now-playing-btn" aria-label="Toggle Now Playing">
+                <i class="bi bi-music-note-list"></i>
+            </button>
+            
+        </footer>
+
+    </div>
+
+    <!--FULL-SCREEN PLAYER: opens when the footer player is clicked.
+    The image/video, lyrics and controls are moved in here by JavaScript-->
+    <section class="full-player" id="full-player" aria-hidden="true" aria-label="Full-screen player">
+        <button class="fs-close" id="fs-close" aria-label="Close full-screen player">
+            <i class="bi bi-chevron-down"></i>
+        </button>
+
+        <!--TOP HALF: image/video on the left, title + artist beside it-->
+        <div class="fs-top">
+            <div class="fs-media" id="fs-media"></div>
+            <div class="fs-info">
+                <h2 id="fs-title">Start your day with a Song!</h2>
+                <p id="fs-artist">Head to the library &amp; pick a song to start Resonating</p>
+            </div>
+        </div>
+
+        <!--Buttons + progress bar-->
+        <div class="fs-controls" id="fs-controls"></div>
+
+        <!--BOTTOM HALF: enlarged lyrics-->
+        <div class="fs-lyrics" id="fs-lyrics"></div>
+        
+    </section>
+
+    <script src="Rsnce_script.js"></script> <!--JavaScript integration-->
+    </body>
+</html>

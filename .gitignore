@@ -1,0 +1,10 @@
+# Freebuff tool artifacts (not part of the website)
+.freebuff/
+.cloud-attachments/
+
+# Course documents (not part of the website)
+Guidelines/
+
+# Windows / OneDrive clutter
+Thumbs.db
+desktop.ini
