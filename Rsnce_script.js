@@ -2284,9 +2284,10 @@ function themesOn() {
     return currentPlan === "premium" && settings.themebg && !phone.matches;
 }
 
-// Matching the background to the artwork is free, but also tablet/desktop only.
+// Matching the background to the artwork is free and works on every screen size,
+// including phones (where themes are not available).
 function colorsOn() {
-    return settings.colorsync && !phone.matches;
+    return settings.colorsync;
 }
 
 // used when the plan, a setting or the screen size changes
@@ -2294,35 +2295,91 @@ function refreshTheme() {
     if (currentCard) applySongTheme(currentCard);
 }
 
-// reads the main colour of a song picture with a tiny canvas
+// reads the colour used the most in a song picture with a tiny canvas
 function extractColor(src, done) {
     const img = new Image();
     img.onload = function () {
         try {
+            const size = 48;
             const c = document.createElement("canvas");
-            c.width = c.height = 24;
+            c.width = c.height = size;
             const ctx = c.getContext("2d", { willReadFrequently: true });
-            ctx.drawImage(img, 0, 0, 24, 24);
-            const d = ctx.getImageData(0, 0, 24, 24).data;
-            let r = 0, g = 0, b = 0, n = 0;
+            ctx.drawImage(img, 0, 0, size, size);
+            const d = ctx.getImageData(0, 0, size, size).data;
+
+            const hues  = {};         // 24 colour families (15 degrees each)
+            const grays = {};         // used when the picture has almost no colour
+            let total = 0, colourful = 0;
 
             for (let i = 0; i < d.length; i += 4) {
                 if (d[i + 3] < 128) continue;
-                const lum = d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114;
+                const r = d[i], g = d[i + 1], b = d[i + 2];
+                const lum = r * 0.299 + g * 0.587 + b * 0.114;
                 if (lum < 22 || lum > 238) continue;      // ignore near-black and near-white pixels
-                r += d[i]; g += d[i + 1]; b += d[i + 2]; n++;
+                total++;
+
+                const max = Math.max(r, g, b), min = Math.min(r, g, b);
+                const sat = max ? (max - min) / max : 0;
+                let source, key;
+
+                if (sat >= 0.2) {
+                    // which colour family (hue) this pixel belongs to
+                    let h;
+                    if (max === r)      h = (g - b) / (max - min);
+                    else if (max === g) h = (b - r) / (max - min) + 2;
+                    else                h = (r - g) / (max - min) + 4;
+                    h = (h * 60 + 360) % 360;
+                    source = hues;
+                    key = Math.floor(h / 15);
+                    colourful++;
+                } else {
+                    source = grays;
+                    key = lum >> 4;                       // low-colour pixels by brightness
+                }
+
+                const bucket = source[key] || (source[key] = { n: 0, r: 0, g: 0, b: 0 });
+                bucket.n++;
+                bucket.r += r; bucket.g += g; bucket.b += b;
             }
 
-            if (n) { r /= n; g /= n; b /= n; } else { r = g = b = 32; }
+            // A picture with real colours is tinted with the colour it uses most.
+            // Neighbouring shades count together, so one red is not split in two.
+            const source = colourful >= total * 0.1 ? hues : grays;
+            const bins = source === hues ? 24 : null;
+            let bestKey = null, bestScore = 0;
 
-            // keep the tint dark enough for the white lyrics and titles to stay readable
-            const lum = r * 0.299 + g * 0.587 + b * 0.114;
+            for (const key in source) {
+                let score = source[key].n;
+                if (bins) {
+                    const next = source[(Number(key) + 1) % bins];
+                    const prev = source[(Number(key) + bins - 1) % bins];
+                    if (next) score += next.n * 0.6;
+                    if (prev) score += prev.n * 0.6;
+                }
+                if (!bestKey || score > bestScore) { bestKey = key; bestScore = score; }
+            }
+
+            const best = bestKey !== null ? source[bestKey] : null;
+            let r, g, b;
+            if (best) {
+                r = best.r / best.n; g = best.g / best.n; b = best.b / best.n;
+            } else {
+                r = g = b = 32;
+            }
+
+            // keep the tint dark enough for the white lyrics and titles to stay readable,
+            // but bright enough that it never looks like a plain black screen
+            let lum = r * 0.299 + g * 0.587 + b * 0.114;
             if (lum > 105) {
                 const k = 105 / lum;
                 r *= k; g *= k; b *= k;
+            } else if (lum > 4 && lum < 42) {
+                const k = 42 / lum;
+                r *= k; g *= k; b *= k;
             }
 
-            done("rgb(" + Math.round(r) + ", " + Math.round(g) + ", " + Math.round(b) + ")");
+            const safe = function (v) { return Math.min(255, Math.round(v)); };
+            done("rgb(" + safe(r) + ", " + safe(g) + ", " + safe(b) + ")");
         } catch (e) {
             done("rgb(10, 16, 32)");                 // canvas blocked (no local server)
         }

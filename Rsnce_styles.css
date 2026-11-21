@@ -1474,16 +1474,28 @@ body.reduce-motion *::after {
 
     /* ---------- FULL-SCREEN PLAYER / ADS ---------- */
     .full-player { background: #000; }
+    /* no scrollbar, so the image is centred on the middle of the screen */
+    .full-player { scrollbar-width: none; }
+    .full-player::-webkit-scrollbar { display: none; }
     .full-player.ad-active { background: #000; }
     .full-player.ad-active .fs-lyrics { display: none; }   /* no "no lyrics" box during an advert */
 
     .fs-media { width: 100%; }                 /* lets the advert video use the full width */
+    .fs-media .np-media { margin: 0 auto; }    /* keeps the song image in the middle of the screen */
     .fs-media #ad-box { width: 100%; }
     .fs-media #ad-video { width: 100%; height: auto; max-height: 62vh; }
     .fs-media .ad-label { top: 8px; left: 8px; font-size: 11px; }
     .fs-media .ad-skip { right: 8px; bottom: 8px; }
 
     .fs-top { height: auto; min-height: calc(100dvh - 200px); padding-top: 4px; }
+
+    /* the song's main colour fills the screen behind the image, so no plain black */
+    .full-player.song-color:not(.has-song-theme) {
+        background:
+            linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.82)),
+            radial-gradient(circle at 50% 30%, var(--fs-color, #0b1020) 0%, #070a10 100%),
+            #000;
+    }
     .full-player.ad-active .fs-top { min-height: 0; justify-content: flex-start; }
 
     .fs-info h2 { font-size: clamp(20px, 6vw, 28px); }
