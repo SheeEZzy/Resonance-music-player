@@ -91,8 +91,21 @@ body{
 /* --- MAIN CONTENT: Home ---
 adding default and custom themes*/
 .home {
-    display:block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     text-align: center;
+}
+
+/* the logo stays at the top, the greeting sits in the middle of the page */
+#view-home {
+    display: flex;
+    flex-direction: column;
+}
+
+#view-home > .home {
+    flex: 0 0 auto;
+    min-height: calc(100vh - 456px);      /* logo + heading + player bar */
 }
 
 .home-logo {
@@ -1392,6 +1405,7 @@ body.reduce-motion *::after {
 
     /* ---------- HOME ---------- */
     #view-home br { display: none; }         /* the empty spacing lines pushed the greeting off screen */
+    #view-home > .home { min-height: calc(100vh - 415px); }  /* keeps the greeting centred on phones */
     #view-home { padding-top: 6px; }
     #view-home .home-logo { width: 150px; margin: 6px auto 10px; }
     #view-home .home h1 {
