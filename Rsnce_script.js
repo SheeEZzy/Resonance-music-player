@@ -7,6 +7,17 @@ App name: Resonance*/
 const player = document.getElementById("player");
 const playBtn = document.getElementById("play-btn");
 
+// |=-=-=-=-=-=-=-=-=- SETTINGS STORAGE =-=-=-=-=-=-=-=-=-|
+// Every switch on the Settings page is saved in the browser.
+const SETTINGS_KEY = "rsnce-settings";
+const DEFAULT_SETTINGS = { motion: true, colorsync: true, themebg: true, lyricSize: "md", autoplay: true };
+let settings = Object.assign({}, DEFAULT_SETTINGS);
+try { settings = Object.assign(settings, JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {}); } catch (e) {}
+
+function saveSettings() {
+    try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) {}
+}
+
 // |=-=-=-=-=-=-=-=-=- LEFT SIDEBAR =-=-=-=-=-=-=-=-=-|
 // The left menu: moving between pages (Home, Library, Premium)
 // and the "New playlist" button.
@@ -23,6 +34,8 @@ function showView(name) {
     navLinks.forEach(function (l) {
         l.classList.toggle("active", l.dataset.view === name);
     });
+    const gear = document.getElementById("settings-btn");
+    if (gear) gear.classList.toggle("active", name === "settings");
     mainContent.classList.toggle("home-bg", name === "home"); // only the Home page shows the big background picture
     mainContent.scrollTop = 0;
 }
@@ -325,6 +338,9 @@ planButtons.forEach(function (btn) {
         songsSinceAd = 0;                                      
         if (currentPlan === "premium") endAd(); else updateAdSkip();   // premium users see no ads
         renderPlans();
+        applySettings();      // the theme switch follows the new plan
+        updateThemeGate();
+        refreshTheme();
         
     });
 });
@@ -1461,6 +1477,14 @@ const lyricsData = {
 
 let currentLyrics = [];
 let activeLine = -1;
+
+// the line being sung stays at the top of the box (it used to sit in the middle)
+function scrollLyricToTop(line, smooth) {
+    if (!line) return;
+    const top = Math.max(0, line.offsetTop - 12);
+    if (smooth) lyricsBox.scrollTo({ top: top, behavior: "smooth" });
+    else lyricsBox.scrollTop = top;
+}
 let trMode = 0;       // 0 = original words, 1 = romaji, 2 = English translation
 const trBtn   = document.getElementById("tr-btn");
 const trLabel = document.getElementById("tr-label");
@@ -1543,9 +1567,9 @@ trBtn.addEventListener("click", function () {
     trMode = (trMode + 1) % 3;
     applyTranslation();
 
-    // the lines changed height, so center the line being sung again
+    // the lines changed height, so bring the line being sung back to the top
     const line = lyricsBox.querySelectorAll(".lyric-line")[activeLine];
-    if (line) lyricsBox.scrollTop = line.offsetTop - lyricsBox.clientHeight / 2 + line.clientHeight / 2;
+    if (line) scrollLyricToTop(line, false);
 });
 
 // lights up the line that is being sung right now
@@ -1568,10 +1592,7 @@ player.addEventListener("timeupdate", function () {
     // scrolls only the lyrics, not the whole sidebar
     if (index >= 0) {
         const line = lines[index];
-        lyricsBox.scrollTo({
-            top: line.offsetTop - lyricsBox.clientHeight / 2 + line.clientHeight / 2,
-            behavior: "smooth"
-        });
+        scrollLyricToTop(line, true);
     }
 });
 
@@ -1686,6 +1707,7 @@ function setMarquee(el, text) {
 
 function checkMarquee(span) {
     const box = span.closest("p");
+    if (!box) return;                     // the title was replaced before this ran
     span.classList.remove("scrolling");
     box.classList.remove("marquee-box");
     if (!box.clientWidth) return;
@@ -1802,24 +1824,37 @@ const repeatBtn = document.getElementById("repeat-btn");
 let shuffleOn = false;
 let repeatMode = 0;                          // 0 = off, 1 = repeat all, 2 = repeat one
 
-shuffleBtn.addEventListener("click", function () {
-    shuffleOn = !shuffleOn;
-    shuffleBtn.classList.toggle("active", shuffleOn);
-    renderQueue(); // updates the Queue list
-});
+shuffleBtn.addEventListener("click", function () { setShuffle(!shuffleOn); });
+repeatBtn.addEventListener("click", function () { setRepeat((repeatMode + 1) % 3); });
 
-repeatBtn.addEventListener("click", function () {
-    repeatMode = (repeatMode + 1) % 3;
-    repeatBtn.classList.toggle("active", repeatMode > 0);
-    repeatBtn.innerHTML = repeatMode === 2
+// used by both the player buttons and the Settings page
+function setShuffle(on) {
+    shuffleOn = on;
+    shuffleBtn.classList.toggle("active", on);
+    document.getElementById("set-shuffle").checked = on;
+    renderQueue(); // updates the Queue list
+}
+
+function setRepeat(mode) {
+    repeatMode = mode;
+    repeatBtn.classList.toggle("active", mode > 0);
+    repeatBtn.innerHTML = mode === 2
         ? '<i class="bi bi-repeat-1"></i>'
         : '<i class="bi bi-repeat"></i>';
-        renderQueue();
-});
+    document.getElementById("set-repeat").value = String(mode);
+    renderQueue();
+}
 
 // what happens when a song ends
 player.addEventListener("ended", function () {
     if (repeatMode === 2) { playsong(currentindex); return; }
+
+    if (!settings.autoplay) {                 // Autoplay switched off in Settings
+        playBtn.textContent = "▶";
+        songStopped = true;
+        setSidebar(false);
+        return;
+    }
 
     const isLast = queue.indexOf(currentindex) === queue.length - 1;
     if (queue.length && !(isLast && repeatMode === 0 && !shuffleOn)) {
@@ -1928,7 +1963,7 @@ function openFullPlayer() {
     // scrolls the lyrics to the line being sung now
     requestAnimationFrame(function () {
         const line = lyricsBox.querySelectorAll(".lyric-line")[activeLine];
-        if (line) lyricsBox.scrollTop = line.offsetTop - lyricsBox.clientHeight / 2 + line.clientHeight / 2;
+        if (line) scrollLyricToTop(line, false);
     });
     fsClose.focus();
 }
@@ -2023,6 +2058,7 @@ function playAd(done) {
     fullPlayer.classList.add("ad-active");         // the full-screen view shows the ad instead of the cover
     adBox.hidden = false;
     fullPlayer.classList.remove("has-song-theme");   // ads will use the normal background
+    fullPlayer.classList.remove("song-color");
 
     const ad = adVideos[adIndex];
     adIndex = (adIndex + 1) % adVideos.length;
@@ -2096,11 +2132,109 @@ player.addEventListener("volumechange", function () {
     adVideo.muted = player.muted;
 });
 
+// |=-=-=-=-=-=-=-=-=-=-=-= SETTINGS PAGE =-=-=-=-=-=-=-=-=-=-=-=-=|
+const LYRIC_SCALES = { sm: 0.82, md: 1, lg: 1.24 };
+const PLAN_NAMES = { free: "Resonance Free", student: "Sentinel (Student)", premium: "Arbiter+" };
+
+// puts every control on the page in step with what is saved
+function applySettings() {
+    document.body.classList.toggle("reduce-motion", !settings.motion);
+    document.documentElement.style.setProperty("--lyric-scale", LYRIC_SCALES[settings.lyricSize] || 1);
+
+    document.getElementById("set-motion").checked = settings.motion;
+    document.getElementById("set-colorsync").checked = settings.colorsync;
+    document.getElementById("set-autoplay").checked = settings.autoplay;
+    document.getElementById("set-lyricsize").value = settings.lyricSize;
+
+    const arbiter = currentPlan === "premium";
+    const themeToggle = document.getElementById("set-themebg");
+    themeToggle.checked = settings.themebg && arbiter;
+    themeToggle.disabled = !arbiter;
+    themeToggle.closest(".set-row").classList.toggle("set-locked", !arbiter);
+    document.getElementById("set-themebg-desc").textContent = arbiter
+        ? "Full-screen artwork behind the player. Tablet and desktop only."
+        : "Included with Arbiter+. Tablet and desktop only.";
+
+    document.getElementById("set-shuffle").checked = shuffleOn;
+    document.getElementById("set-repeat").value = String(repeatMode);
+    document.getElementById("set-plan-desc").textContent =
+        "You are currently on the " + (PLAN_NAMES[currentPlan] || PLAN_NAMES.free) + " plan.";
+}
+
+// ---- the Home page theme previews are locked below Arbiter+ ----
+const themesGrid = document.querySelector(".themes");
+const themesLock = document.getElementById("themes-lock");
+const themesNote = document.getElementById("themes-note");
+
+function updateThemeGate() {
+    if (!themesGrid) return;
+    const locked = currentPlan !== "premium";
+    themesGrid.classList.toggle("locked", locked);
+    themesLock.hidden = !locked;
+    themesNote.textContent = locked
+        ? "Arbiter+ members can use themes on tablet and desktop."
+        : "Themes are unlocked for your Arbiter+ account on tablet and desktop.";
+}
+
+if (themesGrid) {
+    document.getElementById("themes-lock-btn").addEventListener("click", function () {
+        showView("premium");
+        history.replaceState(null, "", "#premium");
+    });
+    themesGrid.querySelectorAll(".theme").forEach(function (card) {
+        card.addEventListener("click", function () {
+            if (currentPlan !== "premium") showView("premium");
+        });
+    });
+}
+
+// the gear in the top bar opens this page
+document.getElementById("settings-btn").addEventListener("click", function () {
+    showView("settings");
+    history.replaceState(null, "", "#settings");
+});
+
+// one switch, saved as soon as it changes
+function bindToggle(id, key, after) {
+    const el = document.getElementById(id);
+    el.addEventListener("change", function () {
+        settings[key] = el.checked;
+        saveSettings();
+        applySettings();
+        if (after) after();
+    });
+}
+
+bindToggle("set-motion", "motion");
+bindToggle("set-colorsync", "colorsync", refreshTheme);
+bindToggle("set-themebg", "themebg", refreshTheme);
+bindToggle("set-autoplay", "autoplay");
+
+document.getElementById("set-lyricsize").addEventListener("change", function () {
+    settings.lyricSize = this.value;
+    saveSettings();
+    applySettings();
+});
+
+document.getElementById("set-shuffle").addEventListener("change", function () { setShuffle(this.checked); });
+document.getElementById("set-repeat").addEventListener("change", function () { setRepeat(Number(this.value)); });
+
+document.getElementById("set-plan-btn").addEventListener("click", function () {
+    showView("premium");
+    history.replaceState(null, "", "#premium");
+});
+
+// themes are desktop/tablet only, so re-check when the screen size changes
+[phone, tablet].forEach(function (mq) { mq.addEventListener("change", refreshTheme); });
+
+
 // ---------- START THE APP ----------
 // Runs once at the end, after everything above is ready.
 renderQueue();
 renderRecent();
 loadLyrics(null);     // shows the no-lyrics message before any song plays
+applySettings();      // restores the saved settings
+updateThemeGate();    // locks or unlocks the theme previews
 
 // ||=================== MOST IMPORTANT FUNCTIONS ===========================||
 // These functions are kept at the very bottom on purpose:
@@ -2142,20 +2276,101 @@ const songThemes = {
     
 };
 
-// Gives the full-screen player the picture of the song that just started.
-function applySongTheme(card) {
-    const picture = songThemes[card.dataset.src];   // empty when the song has no theme
+let currentCard = null;      // the song that is playing right now
+const colorCache = {};       // song picture -> main colour, so it is only read once
 
-    if (!picture) {
-        // No theme for this song -> remove ours, the old background comes back by itself
-        fullPlayer.classList.remove("has-song-theme");
-        fullPlayer.style.removeProperty("--fs-theme");
+// Themes are an Arbiter+ feature and only exist on tablet and desktop.
+function themesOn() {
+    return currentPlan === "premium" && settings.themebg && !phone.matches;
+}
+
+// Matching the background to the artwork is free, but also tablet/desktop only.
+function colorsOn() {
+    return settings.colorsync && !phone.matches;
+}
+
+// used when the plan, a setting or the screen size changes
+function refreshTheme() {
+    if (currentCard) applySongTheme(currentCard);
+}
+
+// reads the main colour of a song picture with a tiny canvas
+function extractColor(src, done) {
+    const img = new Image();
+    img.onload = function () {
+        try {
+            const c = document.createElement("canvas");
+            c.width = c.height = 24;
+            const ctx = c.getContext("2d", { willReadFrequently: true });
+            ctx.drawImage(img, 0, 0, 24, 24);
+            const d = ctx.getImageData(0, 0, 24, 24).data;
+            let r = 0, g = 0, b = 0, n = 0;
+
+            for (let i = 0; i < d.length; i += 4) {
+                if (d[i + 3] < 128) continue;
+                const lum = d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114;
+                if (lum < 22 || lum > 238) continue;      // ignore near-black and near-white pixels
+                r += d[i]; g += d[i + 1]; b += d[i + 2]; n++;
+            }
+
+            if (n) { r /= n; g /= n; b /= n; } else { r = g = b = 32; }
+
+            // keep the tint dark enough for the white lyrics and titles to stay readable
+            const lum = r * 0.299 + g * 0.587 + b * 0.114;
+            if (lum > 105) {
+                const k = 105 / lum;
+                r *= k; g *= k; b *= k;
+            }
+
+            done("rgb(" + Math.round(r) + ", " + Math.round(g) + ", " + Math.round(b) + ")");
+        } catch (e) {
+            done("rgb(10, 16, 32)");                 // canvas blocked (no local server)
+        }
+    };
+    img.onerror = function () { done("rgb(10, 16, 32)"); };
+    img.src = src;
+}
+
+// tints the full-screen player when there is no theme picture to show
+function applySongColor(card) {
+    const themed = themesOn() && songThemes[card.dataset.src];
+    if (!colorsOn() || themed) {
+        fullPlayer.classList.remove("song-color");
         return;
     }
 
-    // Has a theme -> hand the picture to the CSS, then switch the rule on
-    fullPlayer.style.setProperty("--fs-theme", 'url("' + picture + '")');
-    fullPlayer.classList.add("has-song-theme");
+    const key = card.dataset.img;
+    if (colorCache[key]) {
+        fullPlayer.style.setProperty("--fs-color", colorCache[key]);
+        fullPlayer.classList.add("song-color");
+        return;
+    }
+
+    fullPlayer.classList.remove("song-color");       // no stale tint while the colour is read
+    extractColor(key, function (color) {
+        colorCache[key] = color;
+        if (currentCard !== card) return;             // the song changed meanwhile
+        fullPlayer.style.setProperty("--fs-color", color);
+        fullPlayer.classList.add("song-color");
+    });
+}
+
+// Gives the full-screen player the picture of the song that just started.
+function applySongTheme(card) {
+    currentCard = card;
+    const picture = themesOn() ? songThemes[card.dataset.src] : null;   // empty when the song has no theme
+
+    if (!picture) {
+        // No theme for this song -> remove ours, the colour background takes over
+        fullPlayer.classList.remove("has-song-theme");
+        fullPlayer.style.removeProperty("--fs-theme");
+    } else {
+        // Has a theme -> hand the picture to the CSS, then switch the rule on
+        fullPlayer.style.setProperty("--fs-theme", 'url("' + picture + '")');
+        fullPlayer.classList.add("has-song-theme");
+    }
+
+    applySongColor(card);
 }
 
 

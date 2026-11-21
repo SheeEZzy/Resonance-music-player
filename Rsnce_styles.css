@@ -1089,9 +1089,208 @@ footer.player { cursor: pointer; }           /* hints that the bar can be clicke
 }
 
 
+/* ==================================================================
+   LYRICS SIZE (Settings > Graphics)
+   ================================================================== */
+.lyric-line { font-size: calc(27px * var(--lyric-scale, 1)); }
+.fs-lyrics .lyric-line { font-size: calc(clamp(22px, 3vw, 36px) * var(--lyric-scale, 1)); }
+
+/* ==================================================================
+   FULL-SCREEN PLAYER TINTED WITH THE SONG'S MAIN COLOUR
+   (used when the song has no theme picture)
+   ================================================================== */
+.full-player.song-color:not(.has-song-theme) {
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.92)),
+        radial-gradient(circle at 50% 0%, var(--fs-color, #0b1020) 0%, #05070c 72%),
+        #000;
+}
+
+/* ==================================================================
+   SETTINGS BUTTON (in the heading)
+   ================================================================== */
+.settings-btn {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border: none;
+    border-radius: 50%;
+    background: #282828;
+    color: #B3B3B3;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.settings-btn:hover { background: #333; color: #fff; }
+.settings-btn.active { background: #00aeff; color: #fff; }
+
+/* ==================================================================
+   SETTINGS PAGE
+   ================================================================== */
+#view-settings { padding-bottom: 24px; }
+#view-settings h2 { margin-bottom: 4px; }
+
+.set-group {
+    background: #181818;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 16px 0 0;
+    max-width: 780px;
+    box-sizing: border-box;
+}
+.set-group h3 { margin: 0 0 4px; }
+
+.set-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+    border-top: 1px solid #262626;
+}
+.set-group h3 + .set-row { border-top: none; padding-top: 8px; }
+
+.set-text { min-width: 0; }
+.set-name { margin: 0; font-weight: 600; }
+.set-desc { margin: 2px 0 0; font-size: 13px; color: #9a9a9a; line-height: 1.35; }
+
+.set-btn, .themes-lock button {
+    flex: none;
+    padding: 9px 16px;
+    border: none;
+    border-radius: 500px;
+    background: #fff;
+    color: #000;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.set-btn:hover, .themes-lock button:hover { background: #00aeff; color: #fff; transform: scale(1.03); }
+
+.set-select {
+    flex: none;
+    padding: 8px 10px;
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+    background: #242424;
+    color: #fff;
+    font: inherit;
+    cursor: pointer;
+}
+
+/* on/off switch */
+.switch { position: relative; flex: none; width: 46px; height: 26px; }
+.switch input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+.switch .slider {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: #4d4d4d;
+    transition: background 0.2s;
+    pointer-events: none;
+}
+.switch .slider::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.2s;
+}
+.switch input:checked + .slider { background: #00aeff; }
+.switch input:checked + .slider::after { transform: translateX(20px); }
+.switch input:disabled + .slider { opacity: 0.4; }
+.switch input:disabled { cursor: not-allowed; }
+
+.set-locked .set-name, .set-locked .set-desc { opacity: 0.55; }
+
+/* small "Arbiter+" badge */
+.pill {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #00aeff;
+    color: #001522;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+/* About Resonance */
+.about-logo {
+    display: block;
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+    border-radius: 50%;
+    margin: 8px 0 10px;
+}
+.about-version { margin: 0 0 10px; color: #9a9a9a; font-size: 13px; }
+.about-text { margin: 0 0 12px; color: #cfcfcf; line-height: 1.5; max-width: 60ch; }
+.about-list { margin: 0 0 14px; padding-left: 18px; color: #cfcfcf; line-height: 1.6; }
+.about-link { color: #00aeff; }
+
+/* ==================================================================
+   THEMES: Locked previews for everyone below Arbiter+
+   ================================================================== */
+.themes-note { margin: 4px 0 0; color: #9a9a9a; font-size: 13px; }
+.themes.locked { display: none; }
+.themes-lock {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 16px;
+    border: 1px dashed #3a3a3a;
+    border-radius: 10px;
+    background: #141414;
+    max-width: 560px;
+}
+.themes-lock[hidden] { display: none; }
+.themes-lock i { font-size: 20px; color: #00aeff; }
+.themes-lock p { margin: 0; color: #cfcfcf; font-size: 14px; }
+
+/* ==================================================================
+   REDUCED MOTION (Settings > Graphics)
+   ================================================================== */
+body.reduce-motion *,
+body.reduce-motion *::before,
+body.reduce-motion *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+}
+
 /* Tablet screen size*/
 @media (max-width: 1023px){
     :root { --right-sidebar-w: 0px; }
+
+    /* plans no longer force a tall fixed height on small screens */
+    .plans { height: auto; align-items: start; }
+    .themes { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
     .left-sidebar{padding: 6px}
     #volume-bar { width: 70px; }
 
@@ -1173,9 +1372,120 @@ footer.player { cursor: pointer; }           /* hints that the bar can be clicke
     }
 
     .player .track-info p{
-        width:165px;
+        width: auto;
+        max-width: 100%;
         white-space: nowrap;
         overflow: hidden;
 
     }
+}
+
+/* ==================================================================
+   PHONE FIXES AND PHONE-SPECIFIC RULES
+   (kept last so they win over the blocks above)
+   ================================================================== */
+@media (max-width: 767px) {
+
+    /* the heading keeps room for the logo (left) and settings button (right) */
+    .heading { padding: 0 50px 0 52px; }
+    .search-bar { max-width: none; }
+
+    /* ---------- HOME ---------- */
+    #view-home br { display: none; }         /* the empty spacing lines pushed the greeting off screen */
+    #view-home { padding-top: 6px; }
+    #view-home .home-logo { width: 150px; margin: 6px auto 10px; }
+    #view-home .home h1 {
+        font-size: clamp(26px, 7.6vw, 34px);
+        line-height: 1.2;
+        margin: 6px 0 0;
+    }
+    #view-home .home p { font-size: 14px; line-height: 1.4; padding: 0 6px; }
+
+    /* themes are a tablet/desktop feature, so nothing theme related shows here */
+    .themes, .themes-lock, .themes-note, .themes-title { display: none; }
+
+    /* ---------- LIBRARY ---------- */
+    .content { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-top: 10px; }
+    .card { padding: 10px; }
+    .card img { margin-bottom: 8px; }
+    .card-title { font-size: 14px; }
+    .card-sub { font-size: 12px; }
+    .add-btn { top: 16px; right: 16px; width: 28px; height: 28px; }
+
+    /* ---------- PREMIUM ---------- */
+    .plans { height: auto; grid-template-columns: 1fr; gap: 12px; }
+    .plan { padding: 16px; }
+    .plan h3 { font-size: x-large; }
+    .plan-btn { font-size: 15px; }
+
+    /* ---------- SETTINGS ---------- */
+    #view-settings { padding: 0 2px 20px; }
+    .set-group { padding: 12px; }
+    .set-row { gap: 10px; flex-wrap: wrap; }
+    .set-desc { font-size: 12.5px; }
+    .set-btn { padding: 8px 14px; }
+    .about-logo { width: 80px; height: 80px; }
+
+    /* ---------- PLAYER BAR ----------
+       image | title/artist | buttons on the first row,
+       the progress bar on its own full-width row below.
+       (before, the title text spilled over the buttons) */
+    :root { --player-h: 92px; }
+
+    footer.player {
+        display: grid;
+        grid-template-columns: 46px minmax(0, 1fr) auto;
+        grid-template-rows: 48px auto;
+        align-items: center;
+        align-content: center;
+        gap: 2px 8px;
+        padding: 4px 10px;
+    }
+    footer.player .Song-img { width: 46px; height: 46px; margin: 0; }
+
+    .player .track-info {
+        grid-column: 2;
+        grid-row: 1;
+        flex: none;
+        width: auto;
+        min-width: 0;
+        overflow: hidden;
+    }
+    .player .track-info p {
+        width: auto;
+        max-width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .player .controls { display: contents; }
+    .player .control-buttons {
+        grid-column: 3;
+        grid-row: 1;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+    .player .control-buttons button { font-size: 15px; }
+    .player #play-btn { width: 30px; height: 30px; font-size: 13px; }
+
+    .player .progress-row { grid-column: 1 / -1; grid-row: 2; width: 100%; gap: 6px; }
+    .player .progress-row span { min-width: 30px; font-size: 11px; }
+
+    /* ---------- FULL-SCREEN PLAYER / ADS ---------- */
+    .full-player { background: #000; }
+    .full-player.ad-active { background: #000; }
+    .full-player.ad-active .fs-lyrics { display: none; }   /* no "no lyrics" box during an advert */
+
+    .fs-media { width: 100%; }                 /* lets the advert video use the full width */
+    .fs-media #ad-box { width: 100%; }
+    .fs-media #ad-video { width: 100%; height: auto; max-height: 62vh; }
+    .fs-media .ad-label { top: 8px; left: 8px; font-size: 11px; }
+    .fs-media .ad-skip { right: 8px; bottom: 8px; }
+
+    .fs-top { height: auto; min-height: calc(100dvh - 200px); padding-top: 4px; }
+    .full-player.ad-active .fs-top { min-height: 0; justify-content: flex-start; }
+
+    .fs-info h2 { font-size: clamp(20px, 6vw, 28px); }
+    .fs-lyrics { height: auto; min-height: 320px; }
 }

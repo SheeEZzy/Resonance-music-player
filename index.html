@@ -21,6 +21,7 @@ App name: Resonance-->
         <header class="heading">
             <img class="logo" src="Resonance.Logo.png" alt="Resonance" data-view="home"> <!--LOGO-->
             <input type="search" class="search-bar" placeholder="What do you want to play?" aria-label="Search">
+            <button class="settings-btn" id="settings-btn" aria-label="Settings" title="Settings"><i class="bi bi-gear-fill"></i></button>
         </header>
 
     <!--LEFT SIDEBAR-->
@@ -57,7 +58,14 @@ App name: Resonance-->
                     1. site-theme  -> the look of the whole website (only a preview, "coming soon")
                     2. song-theme  -> background pictures for the FULL-SCREEN PLAYER only -->
 
-                <h3>Try out our Premium themes! (Coming Soon!)</h3>
+                <h3 class="themes-title">Try out our Premium themes! <span class="pill">Arbiter+</span></h3>
+                <p class="themes-note" id="themes-note"></p>
+
+                <div class="themes-lock" id="themes-lock" hidden>
+                    <i class="bi bi-lock-fill"></i>
+                    <p>Themes are an <b>Arbiter+</b> feature, available on tablet and desktop.</p>
+                    <button id="themes-lock-btn">View Arbiter+</button>
+                </div>
                 
                 <div class="themes">
                     <div class="theme">
@@ -539,6 +547,110 @@ App name: Resonance-->
                     <button id="pl-delete">Delete playlist</button>
                 </div>
                 <div id="pl-songs"></div>
+            </section>
+
+
+            <!-------*** SETTINGS PAGE ***------->
+            <section class="view" id="view-settings" hidden>
+                <h2>Settings</h2>
+                <p class="subtitle">Tune Resonance to look and sound the way you like.</p>
+
+                <!-- ---------- GENERAL ---------- -->
+                <div class="set-group">
+                    <h3>General</h3>
+
+                    <div class="set-row">
+                        <div class="set-text">
+                            <p class="set-name">Your plan</p>
+                            <p class="set-desc" id="set-plan-desc"></p>
+                        </div>
+                        <button class="set-btn" id="set-plan-btn">Manage plan</button>
+                    </div>
+
+                    <div class="set-row">
+                        <div class="set-text">
+                            <p class="set-name">Shuffle</p>
+                            <p class="set-desc">Play the queue in a random order.</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" id="set-shuffle" aria-label="Shuffle"><span class="slider"></span></label>
+                    </div>
+
+                    <div class="set-row">
+                        <div class="set-text">
+                            <p class="set-name">Repeat</p>
+                            <p class="set-desc">What happens when a song or the queue ends.</p>
+                        </div>
+                        <select class="set-select" id="set-repeat" aria-label="Repeat">
+                            <option value="0">Off</option>
+                            <option value="1">Repeat queue</option>
+                            <option value="2">Repeat song</option>
+                        </select>
+                    </div>
+
+                    <div class="set-row">
+                        <div class="set-text">
+                            <p class="set-name">Autoplay</p>
+                            <p class="set-desc">Start the next song automatically when one finishes.</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" id="set-autoplay" aria-label="Autoplay"><span class="slider"></span></label>
+                    </div>
+                </div>
+
+                <!-- ---------- GRAPHICS ---------- -->
+                <div class="set-group">
+                    <h3>Graphics</h3>
+
+                    <div class="set-row">
+                        <div class="set-text">
+                            <p class="set-name">Motion</p>
+                            <p class="set-desc">Animations, hover lift, page fades and scrolling titles.</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" id="set-motion" aria-label="Motion"><span class="slider"></span></label>
+                    </div>
+
+                    <div class="set-row">
+                        <div class="set-text">
+                            <p class="set-name">Lyrics size</p>
+                            <p class="set-desc">How large the lyrics appear in the player.</p>
+                        </div>
+                        <select class="set-select" id="set-lyricsize" aria-label="Lyrics size">
+                            <option value="sm">Small</option>
+                            <option value="md">Medium</option>
+                            <option value="lg">Large</option>
+                        </select>
+                    </div>
+
+                    <div class="set-row">
+                        <div class="set-text">
+                            <p class="set-name">Match background to artwork</p>
+                            <p class="set-desc">Tints the full-screen player with the main colour of the song image. Tablet and desktop only.</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" id="set-colorsync" aria-label="Match background to artwork"><span class="slider"></span></label>
+                    </div>
+
+                    <div class="set-row">
+                        <div class="set-text">
+                            <p class="set-name">Song theme backgrounds <span class="pill">Arbiter+</span></p>
+                            <p class="set-desc" id="set-themebg-desc">Full-screen artwork behind the player. Tablet and desktop only.</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" id="set-themebg" aria-label="Song theme backgrounds"><span class="slider"></span></label>
+                    </div>
+                </div>
+
+                <!-- ---------- ABOUT ---------- -->
+                <div class="set-group about">
+                    <h3>About Resonance</h3>
+                    <img class="about-logo" src="Resonance.Logo2.png" alt="Resonance logo">
+                    <p class="about-version">Version 1.0 &middot; BSIT-1A extended project</p>
+                    <p class="about-text">Resonance is a Spotify-inspired music player built with plain HTML, CSS and JavaScript. Plug in your headphones, tune in, and discover your frequencies.</p>
+                    <ul class="about-list">
+                        <li><b>Developers:</b> Lavina, Linux &middot; de la Cerna, Joseph &middot; Bono, Chino &middot; Canada, Miguel</li>
+                        <li><b>Built with:</b> HTML5, CSS Grid and Flexbox, JavaScript, Bootstrap Icons</li>
+                        <li><b>Includes:</b> songs, music videos, adverts, lyrics with translations, playlists and themes</li>
+                        <li><b>Course:</b> BSIT-1A</li>
+                    </ul>
+                    <a class="about-link" href="https://github.com/SheeEZzy/resonance" target="_blank" rel="noopener">View the source on GitHub</a>
+                </div>
             </section>
         </div>
 
