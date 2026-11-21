@@ -98,7 +98,8 @@ adding default and custom themes*/
 }
 
 /* the logo stays at the top, the greeting sits in the middle of the page */
-#view-home {
+/* :not([hidden]) keeps the page-switching rule (.view[hidden]) able to hide it */
+#view-home:not([hidden]) {
     display: flex;
     flex-direction: column;
 }
