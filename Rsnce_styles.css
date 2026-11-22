@@ -171,7 +171,7 @@ adding default and custom themes*/
 .main-content.home-bg {
     background:
         linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.75)),   /* dark overlay so the text stays readable */
-        url("Home_Bg_img.png") center / cover no-repeat;
+        url("Home_Bg_img.webp") center / cover no-repeat;
 }
 
 /* \\\\-- MAIN CONTENT: Library --\\\\
@@ -1327,6 +1327,10 @@ body.reduce-motion *::after {
     .themes { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
     .left-sidebar{padding: 6px}
     #volume-bar { width: 70px; }
+
+    /* shuffle and repeat are only in the full-screen player on phones and tablets */
+    footer.player #shuffle-btn,
+    footer.player #repeat-btn { display: none; }
 
     /* hidden by default, becomes a popup when toggled */
     .right-sidebar {

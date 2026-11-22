@@ -160,7 +160,7 @@ function renderPlaylists() {
         card.className = "card";
         card.dataset.category = "playlists";
         card.innerHTML = '<img alt=""><p class="card-title"></p><p class="card-sub"></p>';
-        card.querySelector("img").src = first >= 0 ? songlist[first].dataset.img : "Default_img.png";
+        card.querySelector("img").src = first >= 0 ? songlist[first].dataset.img : "Default_img.webp";
         card.querySelector(".card-title").textContent = pl.name;
         card.querySelector(".card-sub").textContent = countText(pl.songs.length);
         card.addEventListener("click", function () { openPlaylist(i); });
@@ -1783,15 +1783,23 @@ player.addEventListener("timeupdate", function () { syncVideo(false); });
 // progress bar, volume, the full-screen view and the ads.)
 
 // Play and pause
+// The icons come from Bootstrap Icons: the ▶ and ⏸ characters turn into emoji
+// pictures on phones, which is why the button looked like an orange square there.
+function setPlayIcon(playing) {
+    playBtn.innerHTML = playing
+        ? '<i class="bi bi-pause-fill"></i>'
+        : '<i class="bi bi-play-fill"></i>';
+}
+
 playBtn.addEventListener("click", function () {
     if (adPlaying) return;
     if (!player.src) return;                 // no song is loaded yet
     if (player.paused) {
         player.play();
-        playBtn.textContent = "⏸";
+        setPlayIcon(true);
     } else {
         player.pause();
-        playBtn.textContent = "▶";
+        setPlayIcon(false);
     }
 });
 
@@ -1850,7 +1858,7 @@ player.addEventListener("ended", function () {
     if (repeatMode === 2) { playsong(currentindex); return; }
 
     if (!settings.autoplay) {                 // Autoplay switched off in Settings
-        playBtn.textContent = "▶";
+        setPlayIcon(false);
         songStopped = true;
         setSidebar(false);
         return;
@@ -1860,7 +1868,7 @@ player.addEventListener("ended", function () {
     if (queue.length && !(isLast && repeatMode === 0 && !shuffleOn)) {
         playsong(nextIndex());
     } else {
-        playBtn.textContent = "▶";           // the songs are finished
+        setPlayIcon(false);                   // the songs are finished
         songStopped = true;                  
         setSidebar(false); 
     }
@@ -1992,14 +2000,14 @@ const AD_EVERY   = 2;      // how many songs play before an ad
 const SKIP_AFTER = 5;      // seconds before the skip button works (Student plan)
 
 //----ADVERTISEMENT -----
-const AD_DEFAULT_LOGO = "Resonance.Logo.png";   // used when an ad has no logo
+const AD_DEFAULT_LOGO = "Resonance.Logo.webp";   // used when an ad has no logo
 
 // video file, name and logo (the logo is optional)
 const adVideos = [
     { src: "Advert_1.mp4", name: "https://www.coca-cola.com",  logo: "Logo_Ads1.png"},                          
-    { src: "Advert_2.mp4", name: "Resonance Premium", logo: "Resonance.Logo.png" },
+    { src: "Advert_2.mp4", name: "Resonance Premium", logo: "Resonance.Logo.webp" },
     { src: "Advert_3.mp4", name: "https://www.order.burgerking.com", logo: "Logo_Ads4.png" },
-    { src: "Advert_4.mp4", name: "Resonance Premium", logo: "Resonance.Logo.png" },
+    { src: "Advert_4.mp4", name: "Resonance Premium", logo: "Resonance.Logo.webp" },
     { src: "Advert_5.mp4", name: "https://www.gyunyu.com", logo: "Logo_Ads5.jpeg" },
     { src: "Advert_6.mp4", name: "Biolink VCO Hot oil and Shampoo", logo: "Logo_Ads6.jpg" },
     { src: "Advert_7.mp4", name: "https://www.snickers.com", logo: "Logo_Ads7.png" },
@@ -2050,7 +2058,7 @@ function playAd(done) {
     afterAd = done;
 
     player.pause();                                // stops the music
-    playBtn.textContent = "▶";
+    setPlayIcon(false);
 
     songStopped = false;
     setSidebar(true);                              // on desktop the right sidebar opens and stays open
@@ -2252,27 +2260,27 @@ function pop(el) {
 // ---------- SONG THEMES (full-screen player background) ----------
 // (capital letters matter when you upload to GitHub Pages).
 const songThemes = {
-    "nightdancer.mp3": "Song-theme_NightDancer.png",
-    "AllForOne.mp3":   "Song-theme_AllForOne.jpg",
-    "GodZilla.mp3":     "Song-theme_Godzilla.png",
-    "fallenPetals.mp3": "Song-theme_FallenPetals.png",
-    "Overdose.mp3":  "Song-theme_Overdose.png",
-    "Bling-Bang-Bang-Born.mp3": "Song-theme_BlingBangBangBorn.png",
-    "Show-Ado.mp3": "Song-theme_Show.Ado.png",
-    "Human.mp3":  "Song-theme_Human.png",
-    "SUPERNOVA.mp3": "Song-theme_Supernova.png",
-    "IreallyWantToStayAtYourHouse.mp3": "Song-theme_Cyberpunk.png",
+    "nightdancer.mp3": "Song-theme_NightDancer.webp",
+    "AllForOne.mp3":   "Song-theme_AllForOne.webp",
+    "GodZilla.mp3":     "Song-theme_Godzilla.webp",
+    "fallenPetals.mp3": "Song-theme_FallenPetals.webp",
+    "Overdose.mp3":  "Song-theme_Overdose.webp",
+    "Bling-Bang-Bang-Born.mp3": "Song-theme_BlingBangBangBorn.webp",
+    "Show-Ado.mp3": "Song-theme_Show.Ado.webp",
+    "Human.mp3":  "Song-theme_Human.webp",
+    "SUPERNOVA.mp3": "Song-theme_Supernova.webp",
+    "IreallyWantToStayAtYourHouse.mp3": "Song-theme_Cyberpunk.webp",
     "BangBangBang.mp3": "Song-theme_BangBangBang.webp",
     "BiiG.mp3": "Song-theme_BiiG.webp",
-    "GoldTriumph.mp3": "Song-theme_GoldTriumph.png",
-    "ImThinkingMiku.mp3": "Song-theme_Miku.png",
-    "Inferno-FireForce.mp3": "Song-theme_Inferno.png",
-    "LegendCharger.mp3": "Song-theme_LegendChanger.png",
-    "MagicalCureLoveShot!.mp3": "Song-theme_MagicalCureLoveShot.png",
-    "RacingIntoTheNight.mp3": "Song-theme_RacingIntoTheNight.png",
-    "UmapyoiLegend.mp3": "Song-theme_UmapyoiLegend.png",
-    "UnfinishedJourney.mp3": "Song-theme_UnfinishedJourney.png",
-    "TeamTomodachiCover.mp3": "Song-theme_TeamTomodachi.png",
+    "GoldTriumph.mp3": "Song-theme_GoldTriumph.webp",
+    "ImThinkingMiku.mp3": "Song-theme_Miku.webp",
+    "Inferno-FireForce.mp3": "Song-theme_Inferno.webp",
+    "LegendCharger.mp3": "Song-theme_LegendChanger.webp",
+    "MagicalCureLoveShot!.mp3": "Song-theme_MagicalCureLoveShot.webp",
+    "RacingIntoTheNight.mp3": "Song-theme_RacingIntoTheNight.webp",
+    "UmapyoiLegend.mp3": "Song-theme_UmapyoiLegend.webp",
+    "UnfinishedJourney.mp3": "Song-theme_UnfinishedJourney.webp",
+    "TeamTomodachiCover.mp3": "Song-theme_TeamTomodachi.webp",
     
 };
 
@@ -2437,7 +2445,7 @@ function startSong(index) {
 
     player.src = card.dataset.src;
     player.play();
-    playBtn.textContent = "⏸";
+    setPlayIcon(true);
 
     // the footer
     setMarquee(document.getElementById("player-title"), card.dataset.title);
