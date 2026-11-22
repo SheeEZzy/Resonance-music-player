@@ -32,7 +32,9 @@ body{
         "player  player  player";
 }
 
-/*------ HEADING AREA ------*/
+/* |-----------------------------------------------------|
+    HEADING AREA 
+   |-----------------------------------------------------| */
 .heading {
     grid-area: heading;
     position: relative;
@@ -77,7 +79,9 @@ body{
 }
 
 
-/*------ MAIN CONTENT ------*/
+/* |---------------------------------------------------------|
+    MAIN CONTENT APPEARANCE
+   |---------------------------------------------------------| */
 .main-content {
     grid-area: main;
     background: linear-gradient(to bottom, rgba(1, 1, 255, 0.356), black);
@@ -88,7 +92,7 @@ body{
     overflow-y: auto;
 }
 
-/* --- MAIN CONTENT: Home ---
+/* \\\\-- MAIN CONTENT: Home --\\\\
 adding default and custom themes*/
 .home {
     display: flex;
@@ -98,7 +102,6 @@ adding default and custom themes*/
 }
 
 /* the logo stays at the top, the greeting sits in the middle of the page */
-/* :not([hidden]) keeps the page-switching rule (.view[hidden]) able to hide it */
 #view-home:not([hidden]) {
     display: flex;
     flex-direction: column;
@@ -171,7 +174,7 @@ adding default and custom themes*/
         url("Home_Bg_img.png") center / cover no-repeat;
 }
 
-/* --- MAIN CONTENT: Library ---
+/* \\\\-- MAIN CONTENT: Library --\\\\
 For the redirectory buttons -- ALL, Music, Podcasts, Playlists*/
 .redirectory-bar {
     display: flex;           /* puts the items in a row */
@@ -205,7 +208,7 @@ For the redirectory buttons -- ALL, Music, Podcasts, Playlists*/
 }
 
 
-/*---- SONGS AND PLAYLISTS ----
+/* \\\\-- SONGS AND PLAYLISTS --\\\\
 --- SONGS --- */
 .content {
     display: grid;
@@ -274,7 +277,7 @@ For the redirectory buttons -- ALL, Music, Podcasts, Playlists*/
     to   { opacity: 1; transform: none; }
 }
 
-/* --- MAIN CONTENT: Premium page --- */
+/* \\\\-- MAIN CONTENT: Premium page --\\\\ */
 .plans {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -346,7 +349,9 @@ For the redirectory buttons -- ALL, Music, Podcasts, Playlists*/
 
 
 
-/*------- LEFT SIDEBAR NAVIGATION -------*/
+/* |----------------------------------------------------------------|
+    LEFT SIDEBAR APPEARANCE AND NAVIGATION 
+   |----------------------------------------------------------------| */
 .left-sidebar {
     grid-area: left;
     background-color: rgb(16, 16, 16);
@@ -395,7 +400,9 @@ For the redirectory buttons -- ALL, Music, Podcasts, Playlists*/
 
 
 
-/*------ RIGHT SIDEBAR NAVIGATION ------ */
+/* |-----------------------------------------------------------|
+    RIGHT SIDEBAR APPEARANCE AND NAVIGATION 
+   |-----------------------------------------------------------| */
 .right-sidebar {
     grid-area:right;
     background-color: rgb(16, 16, 16);
@@ -532,7 +539,7 @@ For the redirectory buttons -- ALL, Music, Podcasts, Playlists*/
 .pl-info .marquee.scrolling { animation-play-state: paused; }
 .pl-row:hover .pl-info .marquee.scrolling { animation-play-state: running; }
 
-/* ---- Advertisement (right sidebar) ---- */
+/* \\\\ Advertisement (right sidebar) \\\\ */
 #ad-box { margin-bottom: 12px; }
 
 .ad-label {
@@ -576,7 +583,9 @@ For the redirectory buttons -- ALL, Music, Podcasts, Playlists*/
 .right-sidebar.ad-active > :not(#ad-box) { display: none; }
 
 
-/*------- PLAYER/FOOTER------- */
+/*|--------------------------------------------------| 
+    PLAYER / FOOTER APPEARANCE
+  |--------------------------------------------------| */
 .player {
     grid-area: player;
     background-color: rgba(36, 40, 59, 0.54);
@@ -775,8 +784,10 @@ For the redirectory buttons -- ALL, Music, Podcasts, Playlists*/
     transform: scale(1.1);
 }
 
-/*----FOR PLAYLISTS ----
-the "+" button on song cards */
+/*|---------------------------------------|
+    FOR PLAYLISTS 
+  |---------------------------------------|
+--the "+" button on song cards-- */
 .add-btn {
     position: absolute;
     top: 22px;
@@ -868,7 +879,10 @@ the "+" button on song cards */
 .pl-remove { background: none; border: none; color: #B3B3B3; font-size: 16px; cursor: pointer; }
 .pl-remove:hover { color: #fff; }
 
-/*------- FULL-SCREEN PLAYER -------*/
+/*|------------------------------------------------------|
+    FULL-SCREEN PLAYER APPEARANCE 
+  |------------------------------------------------------|*/
+
 footer.player { cursor: pointer; }           /* hints that the bar can be clicked */
 
 /*becomes full screen when the user clickes the footer / player bar */
@@ -885,7 +899,8 @@ footer.player { cursor: pointer; }           /* hints that the bar can be clicke
 .full-player.open { display: flex; }
 
 
-/* THE FULL SCREEN BACKGROUND WHEN A SONG WITH NO THEME IS PLAYING
+/* \\\\\ (THE FULL SCREEN BACKGROUND WHEN A SONG WITH NO THEME IS PLAYING) \\\\\
+
    Three layers, drawn from top to bottom:
      1. a see-through black layer, so the white title/artist stay readable
      2. the song picture (fills the screen, crops the edges if needed)
@@ -956,8 +971,8 @@ footer.player { cursor: pointer; }           /* hints that the bar can be clicke
 .fs-controls .controls button { font-size: 26px; }
 .fs-controls #play-btn { width: 52px; height: 52px; font-size: 22px; padding: 0; }
 
-/* WHEN OPENED ON THE PHONE: 
-    first screen = image/video + buttons, scroll down = lyrics */
+/* \\\\ (THE FULL SCREEN APPEARANCE WHEN OPENED ON THE PHONE) \\\\ 
+    [first screen = image/video + buttons, scroll down = lyrics]  */
 @media (max-width: 767px) {
     .full-player {
         padding: 8px 16px calc(12px + env(safe-area-inset-bottom, 0px));
@@ -1062,10 +1077,10 @@ footer.player { cursor: pointer; }           /* hints that the bar can be clicke
 }
 
 
-/*MUST BE AT THE LAST PART OF THE CSS FILE 
-(rules placed at the top get overridden by the same properties written later/at the bottom) 
+/*-----------------------------
+  Scrollbar Design
+  -----------------------------
 
----For ALL scrollbars---
 (Chrome, Edge, Safari browsers)*/
 .main-content::-webkit-scrollbar-track,
 .left-sidebar::-webkit-scrollbar-track,
@@ -1089,7 +1104,7 @@ footer.player { cursor: pointer; }           /* hints that the bar can be clicke
 .right-sidebar::-webkit-scrollbar-thumb:hover,
 .fs-lyrics::-webkit-scrollbar-thumb:hover, 
 .full-player::-webkit-scrollbar-thumb:hover {
-    background: #1e93c9;            /*color changes on hover */
+    background: #1e93c9;            /*the color changes on hover */
 }
 
 /*(Firefox browser)*/
@@ -1103,16 +1118,16 @@ footer.player { cursor: pointer; }           /* hints that the bar can be clicke
 }
 
 
-/* ==================================================================
-   LYRICS SIZE (Settings > Graphics)
-   ================================================================== */
+/* -------------------------------------
+    LYRICS SIZE (Settings > Graphics)
+    ------------------------------------- */
 .lyric-line { font-size: calc(27px * var(--lyric-scale, 1)); }
 .fs-lyrics .lyric-line { font-size: calc(clamp(22px, 3vw, 36px) * var(--lyric-scale, 1)); }
 
-/* ==================================================================
+/* --------------------------------------------------------
    FULL-SCREEN PLAYER TINTED WITH THE SONG'S MAIN COLOUR
    (used when the song has no theme picture)
-   ================================================================== */
+   --------------------------------------------------------- */
 .full-player.song-color:not(.has-song-theme) {
     background:
         linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.92)),
@@ -1120,9 +1135,9 @@ footer.player { cursor: pointer; }           /* hints that the bar can be clicke
         #000;
 }
 
-/* ==================================================================
+/* ---------------------------------------------
    SETTINGS BUTTON (in the heading)
-   ================================================================== */
+   --------------------------------------------- */
 .settings-btn {
     position: absolute;
     top: 50%;
@@ -1143,9 +1158,9 @@ footer.player { cursor: pointer; }           /* hints that the bar can be clicke
 .settings-btn:hover { background: #333; color: #fff; }
 .settings-btn.active { background: #00aeff; color: #fff; }
 
-/* ==================================================================
+/* ---------------------------------------------------------
    SETTINGS PAGE
-   ================================================================== */
+   --------------------------------------------------------- */
 #view-settings { padding-bottom: 24px; }
 #view-settings h2 { margin-bottom: 4px; }
 
@@ -1265,9 +1280,9 @@ footer.player { cursor: pointer; }           /* hints that the bar can be clicke
 .about-list { margin: 0 0 14px; padding-left: 18px; color: #cfcfcf; line-height: 1.6; }
 .about-link { color: #00aeff; }
 
-/* ==================================================================
-   THEMES: Locked previews for everyone below Arbiter+
-   ================================================================== */
+/* |---------------------------------------------------------------|
+    THEMES: Locked previews for everyone below Arbiter+
+   |---------------------------------------------------------------| */
 .themes-note { margin: 4px 0 0; color: #9a9a9a; font-size: 13px; }
 .themes.locked { display: none; }
 .themes-lock {
@@ -1286,9 +1301,9 @@ footer.player { cursor: pointer; }           /* hints that the bar can be clicke
 .themes-lock i { font-size: 20px; color: #00aeff; }
 .themes-lock p { margin: 0; color: #cfcfcf; font-size: 14px; }
 
-/* ==================================================================
-   REDUCED MOTION (Settings > Graphics)
-   ================================================================== */
+/* |----------------------------------------------------------------|
+    REDUCED MOTION (Settings > Graphics)
+   |----------------------------------------------------------------| */
 body.reduce-motion *,
 body.reduce-motion *::before,
 body.reduce-motion *::after {
@@ -1298,7 +1313,12 @@ body.reduce-motion *::after {
     transition-duration: 0.001ms !important;
 }
 
-/* Tablet screen size*/
+/* |----------------------------------------------------------------|
+    RESPONSIVE WEB DESIGN FOR TABLET AND MOBILE DEVICES
+    (the code blocks are kept last so they win over the blocks above)
+   |----------------------------------------------------------------|
+   
+  \\\\\\\\\\\\\\ TABLET SCREEN SIZE RULES \\\\\\\\\\\\\\\*/
 @media (max-width: 1023px){
     :root { --right-sidebar-w: 0px; }
 
@@ -1325,7 +1345,7 @@ body.reduce-motion *::after {
     }
 }
 
-/* Phone screen size */
+/* \\\\\\\\\\\\\\\\\ PHONE SCREEN SIZE RULES \\\\\\\\\\\\\\\\\\\\ */
 @media (max-width: 767px) {
     .volume { display: none; }
     :root { --nav-h: 60px; }
@@ -1392,15 +1412,10 @@ body.reduce-motion *::after {
         overflow: hidden;
 
     }
-}
 
-/* ==================================================================
-   PHONE FIXES AND PHONE-SPECIFIC RULES
-   (kept last so they win over the blocks above)
-   ================================================================== */
-@media (max-width: 767px) {
+    /* \\\\ [THESE RULES MAY LOOK THE SAME BUT THEY ONLY APPLY FOR PHONE SCREEN SIZES ONLY] \\\\
 
-    /* the heading keeps room for the logo (left) and settings button (right) */
+     the heading keeps room for the logo (left) and settings button (right) */
     .heading { padding: 0 50px 0 52px; }
     .search-bar { max-width: none; }
 

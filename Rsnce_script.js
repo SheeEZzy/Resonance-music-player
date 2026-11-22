@@ -351,7 +351,7 @@ document.querySelectorAll(".plan, .theme").forEach(function (el, i) {
     el.style.setProperty("--i", i % 4);
 });
 
-// Greeting on the Home page
+// ----The automated Greeting on the Home page
 const greetingEl = document.getElementById("greeting");
 const UTC_OFFSET = 8; // the Philippines is 8 hours ahead of UTC
 

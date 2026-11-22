@@ -1,4 +1,4 @@
-<!--HTML for the BSIT - 1A Extended Project: Spotify
+<!--HTML Program for the BSIT - 1A Extended Project: Spotify-inspired music player.
 Lavina, Linux. de la Cerna, Joseph. Bono, Chino. Canada, Miguel.
 App name: Resonance-->
 
@@ -17,14 +17,14 @@ App name: Resonance-->
     <body>
     <div class="app-grid">
         
-    <!--HEADING & SEARCH BAR-->
+    <!-- |-=-=-=-=-=-=-=-= HEADING & SEARCH BAR =-=-=-=-=-=-=-=-=-=-=-=|-->
         <header class="heading">
             <img class="logo" src="Resonance.Logo.png" alt="Resonance" data-view="home"> <!--LOGO-->
             <input type="search" class="search-bar" placeholder="What do you want to play?" aria-label="Search">
             <button class="settings-btn" id="settings-btn" aria-label="Settings" title="Settings"><i class="bi bi-gear-fill"></i></button>
         </header>
 
-    <!--LEFT SIDEBAR-->
+    <!-- |=-=-=-=-=-=-=-=-=-= LEFT SIDEBAR =-=-=-=-=-=-=-=-=-=-=-=-=-=|-->
         <div class="left-sidebar">
             <br><br>
 
@@ -38,10 +38,10 @@ App name: Resonance-->
 
         </div> 
 
-    <!--MAIN CONTENT-->
+    <!-- |=-=-=-=-=-=-=-=-= MAIN CONTENT =-=-=-=-=-=-=-=-=-=-=-=-=| -->
         <div class="main-content"> <!--parent container-->
             
-            <!-- |=-=-=-=-=-=-=-=- HOME PAGE =-=-=-=-=-=-=-=-=-=| -->
+            <!-- |--------------- HOME PAGE ----------------| -->
             <section class="view" id="view-home">
                 <img class="home-logo" src="Resonance.Logo2.png" alt="Resonance logo">
                 <div class="home">
@@ -51,7 +51,7 @@ App name: Resonance-->
 
                 
                 <!-- ---------THEMES ---------
-                    There are now TWO separate theme areas:
+                    There are TWO separate theme areas:
                     1. site-theme  -> the look of the whole website (only a preview, "coming soon")
                     2. song-theme  -> background pictures for the FULL-SCREEN PLAYER only -->
 
@@ -280,12 +280,12 @@ App name: Resonance-->
                     
                     <div class="card" data-category="music"
                         data-src="MagicalCureLoveShot!.mp3"
-                        data-title="M@GICAL CURE! LOVE SHOT! (feat.Hatsune Miku)"
-                        data-artist="SAWTOWNE, Hatsune Miku"
+                        data-title="M@GICAL CURE! LOVE SHOT!"
+                        data-artist="SAWTOWNE ft. Hatsune Miku"
                         data-img="Song_MagicalCureLoveShot.png">
                         <img src="Song_MagicalCureLoveShot.png" alt="MagicalCureLoveShot">
-                        <p class="card-title"> M@GICAL CURE! LOVE SHOT! (feat.Hatsune Miku) </p>
-                        <p class="card-sub">SAWTOWNE, Hatsune Miku</p>
+                        <p class="card-title"> M@GICAL CURE! LOVE SHOT!</p>
+                        <p class="card-sub">SAWTOWNE ft. Hatsune Miku</p>
                     </div>
 
                     <div class="card" data-category="music"
@@ -321,11 +321,11 @@ App name: Resonance-->
                     <div class="card" data-category="music"
                         data-src="TimelessPower.mp3"
                         data-title="Timeless Power 『MFゴースト Soundtrack』"
-                        data-artist="Yū Serizwa ft. MOTSU TV"
+                        data-artist="Yū Serizawa ft. MOTSU TV"
                         data-img="Song_Timeless_Power.png">
                         <img src="Song_Timeless_Power.png" alt="Timeless Power">
                         <p class="card-title">Timeless Power 『MFゴースト Soundtrack』</p>
-                        <p class="card-sub">Yū Serizwa ft. MOTSU TV</p>
+                        <p class="card-sub">Yū Serizawa ft. MOTSU TV</p>
                     </div>
 
                     <div class="card" data-category="music"
@@ -484,7 +484,7 @@ App name: Resonance-->
                     <div class="plan">
                         <h3>Resonance Free</h3>
                         <p class="plan-price">₱0 / month</p><br><br>
-                        <button class="plan-btn" data-plan="free" data-name="Free Plan" data-price="₱0/month"></button>
+                        <button class="plan-btn" data-plan="free" data-name="Resonance Free" data-price="₱0/month"></button>
                         <br><br>
                         <ul>
                             <li>Resonance Free plan</li>
@@ -498,7 +498,7 @@ App name: Resonance-->
                     <div class="plan plan-student">
                         <h3>Sentinel</h3>
                         <p class="plan-price">₱67 / month</p><br><br>
-                        <button class="plan-btn" data-plan="student" data-name="Instance+ Student" data-price="₱67/month"></button>
+                        <button class="plan-btn" data-plan="student" data-name="Sentinel" data-price="₱67/month"></button>
                         <br><br>
                         <ul>
                             <li>Resonance Student plan</li>
@@ -515,7 +515,7 @@ App name: Resonance-->
                     <div class="plan plan-premium">
                         <h3>Arbiter+</h3>
                         <p class="plan-price">₱100,000,000 / month</p> <br><br>
-                        <button class="plan-btn" data-plan="premium" data-name="Instance+" data-price="₱100,000,000/month"></button>
+                        <button class="plan-btn" data-plan="premium" data-name="Arbiter+" data-price="₱100,000,000/month"></button>
                         <br><br>
                         <ul>
                             <li>Resonance Premium plan</li>
@@ -651,7 +651,7 @@ App name: Resonance-->
             </section>
         </div>
 
-    <!--RIGHT SIDEBAR-->
+    <!-- |=-=-=-=-=-=-=-=-RIGHT SIDEBAR=-=-=-=-=-=-=-=-=-=| -->
     <div class="right-sidebar">
 
         <!--ADVERTISEMENT (shown only while an ad is playing)-->
@@ -703,7 +703,7 @@ App name: Resonance-->
         </div>
     </div>
                     
-    <!--FOOTER/PLAYER-->
+    <!-- |=-=-=-=-=-=-=- FOOTER/PLAYER =-=-=-=-=-=-=-=| -->
         <footer class="player">
             <img class="Song-img" id="player-img" src="Default_img.png" alt="Testsong">
             <audio id="player" preload="none"></audio>
