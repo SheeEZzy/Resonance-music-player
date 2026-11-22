@@ -1332,6 +1332,46 @@ body.reduce-motion *::after {
     footer.player #shuffle-btn,
     footer.player #repeat-btn { display: none; }
 
+    /* Player bar: cover, song title, buttons and volume on one row, with the
+       progress bar underneath. Without this the progress bar pinned the width
+       of the buttons column, so the title never gained the room the shuffle and
+       repeat buttons left behind. */
+    :root { --player-h: 88px; }
+    footer.player {
+        display: grid;
+        grid-template-columns: 46px minmax(0, 1fr) auto auto auto;
+        grid-template-rows: 44px auto;
+        align-items: center;
+        align-content: center;
+        gap: 2px 8px;
+        padding: 4px 10px;
+    }
+    footer.player .Song-img { width: 46px; height: 46px; margin: 0; }
+
+    /* the title is the only part that stretches, so it fills whatever the
+       buttons do not need */
+    footer.player .track-info {
+        grid-column: 2;
+        grid-row: 1;
+        flex: none;
+        width: auto;
+        min-width: 0;
+        overflow: hidden;
+    }
+    footer.player .track-info p { max-width: 100%; }
+
+    footer.player .controls { display: contents; }
+    footer.player .control-buttons {
+        grid-column: 3;
+        grid-row: 1;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    footer.player .volume { grid-column: 4; grid-row: 1; margin: 0 8px 0 0; }
+    footer.player #now-playing-btn { grid-column: 5; grid-row: 1; }
+    footer.player .progress-row { grid-column: 1 / -1; grid-row: 2; width: 100%; }
+
     /* hidden by default, becomes a popup when toggled */
     .right-sidebar {
         display: none;
